@@ -8,17 +8,31 @@ Engine.prototype.initialize = function() {
 		this.players = [];
 		this.collisionManager = null;
 		this.context = null;
-		this.lastUpdateTimestamp = null
-		this.deltaTime = null
-		this.ball = null
+		this.lastUpdateTimestamp = null;
+		this.deltaTime = null;
+		this.ball = null;
 	}
 	
 Engine.prototype.addPlayer = function(player) {
+	var newPLayer = new Player( );
+
+	var controller = new PlayerUserController( ); // Default to user controller.
+
+	controller.init(this);
+	newPlayer.init(player, this, controller );
 	
+	players.push( newPlayer );
 }
+
 
 Engine.prototype.removePlayer = function(player) {
 	
+}
+
+
+// feel free to rename this...
+Engine.prototype.getNumberOfPlayers = function() {
+	return this.players.length;
 }
 
 Engine.prototype.checkCollisions = function(deltaTime) {
@@ -26,19 +40,19 @@ Engine.prototype.checkCollisions = function(deltaTime) {
 }
 
 Engine.prototype.loop = function() {
-	var now = Date.now()
+	var now = Date.now();
 	this.deltaTime = now - this.lastUpdateTimestamp;
 	this.checkCollisions(deltaTime);
 	this.updateObjects(deltaTime);
-	this.drawObjects()
+	this.drawObjects();
 	this.saveGameState();
 	this.transmitGameState();
-	this.lastUpdateTimestamp = now
+	this.lastUpdateTimestamp = now;
 };
 
 Engine.prototype.updateObjects = function(dt) {
 	// Server function
-	this.ball.update(dt)
+	this.ball.update(dt);
 	for (var i=0;i<this.players.length; i++) {
 		this.players[i].update();
 	}
@@ -54,7 +68,7 @@ Engine.prototype.start = function () {
 	var self = this
 	(function gameLoop() {
 			self.loop();
-			window.requestAnimationFrame(gameLoop, self.ctx.canvas)
+			window.requestAnimationFrame(gameLoop, self.ctx.canvas);
 	})();
 };
 

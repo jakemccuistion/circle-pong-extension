@@ -5,7 +5,9 @@ Player = function(){
 
 };
 
-Player.prototype.init = function(gameState, playerController){
+Player.prototype.init = function(playerData, gameState, playerController){
+	this.playerData = playerData // don't know what this looks like right now.. some data about who this is...
+	
 	this.posOnSegment = 0.5;    // 0 to 1 0 = left hds 1, = rhs. The extend along the side of the n-gon
 	this.rot = 0; // orientation on the canvas
 	this.posX =0; // position on the canvas
