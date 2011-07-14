@@ -38,17 +38,15 @@ Engine.prototype.drawBackground = function() {
 }
 
 Engine.prototype.addPlayer = function(player) {
-	var newPLayer = new Player( );
-	
-	var controller = new PlayerUserController( ); // Default to user controller.
-
-	controller.init(this);
-	newPlayer.init(player, this, controller, players.length+1);
-	players.push(newPlayer);
-	
-
+	var controller = new PlayerUserController(); // Default to user controller.
+	controller.init( this );
+	var newPlayer = new Player( player, this, controller );
+	// 
+	this.players.push(newPlayer);
+	for ( var i = 0; i < players.length; i++){
+		this.players[i].init(i);		
+	}	
 }
-
 
 Engine.prototype.removePlayer = function(player) {
 	
@@ -61,8 +59,8 @@ Engine.prototype.getNumberOfSides = function() {
 }
 
 Engine.prototype.checkCollisions = function(deltaTime) {
-	//this.context.fillStyle = 'blue';
-	//this.context.fillRect(10, 20, 200, 100);
+	this.context.fillStyle = 'blue';
+	this.context.fillRect(10, 20, 200, 100);
 
 }
 
