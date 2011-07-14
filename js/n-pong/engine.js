@@ -1,6 +1,28 @@
+ // shim layer with setTimeout fallback
+ // currently no way to stop it... boo :(
+window.requestAnimFrame = (function(){
+	return  window.requestAnimationFrame       || 
+					window.webkitRequestAnimationFrame || 
+					window.mozRequestAnimationFrame    || 
+					window.oRequestAnimationFrame      || 
+					window.msRequestAnimationFrame     || 
+					function(/* function */ callback, /* DOMElement */ element){
+						window.setTimeout(callback, 1000 / 60);
+					};
+})();
+
+window.cancelAnimFrame = (function(){
+	return  window.cancelAnimationFrame       || 
+					window.webkitCancelAnimationFrame || 
+					window.mozCancelAnimationFrame    || 
+					function(/* function */ callback, /* DOMElement */ element){
+						window.clearTimeout(callback, 1000 / 60);
+					};
+})();
+
 // Inspired by Seth Ladd's demo code
 Engine = function () {
-	
+	this.init();
 };
 
 
@@ -10,8 +32,10 @@ Engine.prototype.init = function() {
 		this.context = null;
 		this.lastUpdateTimestamp = null;
 		this.deltaTime = null;
-		this.ball = null;
+		this.ball = new Ball();
 		this.animationHandle = null;
+		
+		this.context = document.getElementById('gameboard').getContext("2d")
 }
 	
 Engine.prototype.addPlayer = function(player) {
@@ -37,18 +61,23 @@ Engine.prototype.getNumberOfPlayers = function() {
 }
 
 Engine.prototype.checkCollisions = function(deltaTime) {
-	
+	this.context.fillStyle = 'blue';
+	this.context.fillRect(10, 20, 200, 100);
+
 }
 
 Engine.prototype.loop = function() {
 	var now = Date.now();
 	this.deltaTime = now - this.lastUpdateTimestamp;
-	this.checkCollisions(deltaTime);
-	this.updateObjects(deltaTime);
-	this.drawObjects();
+	this.checkCollisions(this.deltaTime);
+	this.updateObjects(this.deltaTime);
 	this.saveGameState();
 	this.transmitGameState();
 	this.lastUpdateTimestamp = now;
+};
+
+Engine.prototype.transmitGameState = function() {
+	
 };
 
 Engine.prototype.updateObjects = function(dt) {
@@ -73,8 +102,7 @@ Engine.prototype.start = function () {
 	var self = this;
 	(function gameLoop() {
 			self.loop();
-			window.requestAnimationFrame(gameLoop, self.ctx.canvas);
-			this.animationHandle = window.requestAnimationFrame(gameLoop, self.ctx.canvas);
+			this.animationHandle = window.requestAnimFrame(gameLoop, self.context.canvas);
 	})();
 };
 
@@ -82,7 +110,7 @@ Engine.prototype.start = function () {
  - Stops the game loop from running 
 */
 Engine.prototype.stop = function () {
-	window.cancelRequestAnimationFrame(this.animationHandle);
+	window.cancelAnimFrame(this.animationHandle);
 };
 
 Engine.prototype.saveGameState = function() {

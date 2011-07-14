@@ -30,7 +30,7 @@ Ball.prototype.update = function(dt) {
 
 /* After the Update we can draw owrselves on the */ 
 Ball.prototype.draw = function(canvas, element) {
-	/* translate the internal state to a position on the canvas and 
+	/* translate the internal state to a position on the canvas and */
 	
 };
 
