@@ -37,6 +37,7 @@ BackgroundController.prototype.onInstall = function()
       var tabs = windows[w].tabs;
       for (var t = 0; t < tabs.length; t++) {
         var tab = tabs[t];
+        var url = tab.url;
         if (url.indexOf('https://talkgadget.google.com/talkgadget') == 0) { 
           chrome.tabs.executeScript(tab.id, { file: '/js/injection/talk_injection.js' });
         }
