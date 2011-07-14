@@ -38,13 +38,13 @@ BackgroundController.prototype.onInstall = function()
       for (var t = 0; t < tabs.length; t++) {
         var tab = tabs[t];
         if (url.indexOf('https://talkgadget.google.com/talkgadget') == 0) { 
-          chrome.tabs.executeScript(tab.id, { file: '/js/talk_injection.js' });
+          chrome.tabs.executeScript(tab.id, { file: '/js/injection/talk_injection.js' });
         }
         else if (url.indexOf('https://talkgadget.google.com/hangout') == 0) { 
-          chrome.tabs.executeScript(tab.id, { file: '/js/hangout_injection.js' });
+          chrome.tabs.executeScript(tab.id, { file: '/js/injection/hangout_injection.js' });
         }
         else if (url.indexOf('https://googlesharedspaces.appspot.com/p/tuna') == 0) { 
-          chrome.tabs.executeScript(tab.id, { file: '/js/user_injection.js' });
+          chrome.tabs.executeScript(tab.id, { file: '/js/injection/user_injection.js' });
         }
       }
     }

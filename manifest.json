@@ -25,7 +25,7 @@
         "https://talkgadget.google.com/talkgadget*"
        ],
       "js": [
-        "js/talk_injection.js"
+        "js/injection/talk_injection.js"
       ],
       "run_at": "document_end"
     }, 
@@ -34,7 +34,7 @@
         "https://talkgadget.google.com/hangout*"
        ],
       "js": [
-        "js/hangout_injection.js"
+        "js/injection/hangout_injection.js"
       ],
       "run_at": "document_end"
     }, 
@@ -43,8 +43,7 @@
         "https://googlesharedspaces.appspot.com/p/tuna*"
        ],
       "js": [
-        "js/functions.js",
-        "js/user_injection.js"
+        "js/injection/user_injection.js"
       ],
       "run_at": "document_end"
     }
