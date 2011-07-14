@@ -3,8 +3,6 @@
  */
 Injection = function()
 {
-  this.FRIENDS_LIST_CLASS = '.hangout-occupants-list';
-  this.FRIEND_LIST = {};
 };
 
 /**
@@ -13,8 +11,6 @@ Injection = function()
 Injection.prototype.init = function()
 {
   chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
-  
-  //Bind the
 };
 
 /**

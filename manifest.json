@@ -22,15 +22,21 @@
   "content_scripts": [
     {
       "matches": [
-        "http://talkgadget.google.com/*",
-        "https://talkgadget.google.com/*"
+        "https://talkgadget.google.com/talkgadget*"
        ],
       "js": [
-        "js/functions.js",
-        "js/injection.js"
+        "js/talk_injection.js"
       ],
-      "run_at": "document_end",
-      "all_frames": true
+      "run_at": "document_end"
+    }, 
+    {
+      "matches": [
+        "https://talkgadget.google.com/hangout*"
+       ],
+      "js": [
+        "js/hangout_injection.js"
+      ],
+      "run_at": "document_end"
     }, 
     {
       "matches": [
@@ -40,8 +46,7 @@
         "js/functions.js",
         "js/user_injection.js"
       ],
-      "run_at": "document_end",
-      "all_frames": true
+      "run_at": "document_end"
     }
   ]
 }
