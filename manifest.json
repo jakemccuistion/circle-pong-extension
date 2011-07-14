@@ -31,7 +31,7 @@
     }, 
     {
       "matches": [
-        "https://talkgadget.google.com/hangout*"
+        "https://talkgadget.google.com/hangouts*"
        ],
       "js": [
         "js/injection/hangout_injection.js"

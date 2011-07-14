@@ -40,7 +40,7 @@ BackgroundController.prototype.onInstall = function()
         if (url.indexOf('https://talkgadget.google.com/talkgadget') == 0) { 
           chrome.tabs.executeScript(tab.id, { file: '/js/injection/talk_injection.js' });
         }
-        else if (url.indexOf('https://talkgadget.google.com/hangout') == 0) { 
+        else if (url.indexOf('https://talkgadget.google.com/hangouts') == 0) { 
           chrome.tabs.executeScript(tab.id, { file: '/js/injection/hangout_injection.js' });
         }
         else if (url.indexOf('https://googlesharedspaces.appspot.com/p/tuna') == 0) { 
