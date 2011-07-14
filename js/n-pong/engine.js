@@ -32,13 +32,14 @@ Engine.prototype.init = function() {
 	
 Engine.prototype.addPlayer = function(player) {
 	var newPLayer = new Player( );
-
+	
 	var controller = new PlayerUserController( ); // Default to user controller.
 
 	controller.init(this);
-	newPlayer.init(player, this, controller );
+	newPlayer.init(player, this, controller, players.length+1);
+	players.push(newPlayer);
 	
-	players.push( newPlayer );
+
 }
 
 
@@ -48,7 +49,7 @@ Engine.prototype.removePlayer = function(player) {
 
 
 // feel free to rename this...
-Engine.prototype.getNumberOfPlayers = function() {
+Engine.prototype.getNumberOfSides = function() {
 	return this.players.length;
 }
 

@@ -37,24 +37,19 @@ BackgroundController.prototype.onInstall = function()
       var tabs = windows[w].tabs;
       for (var t = 0; t < tabs.length; t++) {
         var tab = tabs[t];
-        if (this.isValidURL(tab.url)) { 
-          chrome.tabs.executeScript(tab.id, { file: '/js/injection.js',
-                                    allFrames: true });
+        var url = tab.url;
+        if (url.indexOf('https://talkgadget.google.com/talkgadget') == 0) { 
+          chrome.tabs.executeScript(tab.id, { file: '/js/injection/talk_injection.js' });
+        }
+        else if (url.indexOf('https://talkgadget.google.com/hangouts') == 0) { 
+          chrome.tabs.executeScript(tab.id, { file: '/js/injection/hangout_injection.js' });
+        }
+        else if (url.indexOf('https://googlesharedspaces.appspot.com/p/tuna') == 0) { 
+          chrome.tabs.executeScript(tab.id, { file: '/js/injection/user_injection.js' });
         }
       }
     }
   });
-};
-
-/**
- * Check if the URL is a valid URL that we support for injection and processing.
- *
- * @param {string} url The URL to check.
- */
-BackgroundController.prototype.isValidURL = function(url)
-{
-  return (url.indexOf('https://talkgadget.google.com') == 0 ||
-      url.indexOf('http://talkgadget.google.com') == 0);
 };
 
 /**
@@ -87,8 +82,11 @@ BackgroundController.prototype.init = function()
                               undefined if there is no response.
  */
 BackgroundController.prototype.onExtensionRequest = function(request, sender, sendResponse) {
-  if (sender.tab && request.method == 'ParticipantsReceived') {
+  if (request.method == 'ParticipantsReceived') {
     console.log('Participants recieved', request.data);
+  }
+  else if (request.method == 'ParticipantsReceived') {
+    console.log('ChatRecieved', request.data);
   }
   sendResponse({}); // snub
 };
