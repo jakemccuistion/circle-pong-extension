@@ -29,7 +29,14 @@ Engine.prototype.init = function() {
 		this.status = document.getElementById('status')
 		this.context = document.getElementById('gameboard').getContext("2d")
 }
-	
+
+Engine.prototype.drawBackground = function() {
+		this.context.beginPath();
+		this.context.arc(190, 190, 190, 0, Math.PI*2, false);
+		this.context.closePath();
+		this.context.fill();
+}
+
 Engine.prototype.addPlayer = function(player) {
 	var newPLayer = new Player( );
 	
@@ -54,8 +61,8 @@ Engine.prototype.getNumberOfSides = function() {
 }
 
 Engine.prototype.checkCollisions = function(deltaTime) {
-	this.context.fillStyle = 'blue';
-	this.context.fillRect(10, 20, 200, 100);
+	//this.context.fillStyle = 'blue';
+	//this.context.fillRect(10, 20, 200, 100);
 
 }
 
@@ -67,6 +74,7 @@ Engine.prototype.loop = function() {
 		this.updateObjects(this.deltaTime);
 		this.saveGameState();
 		this.transmitGameState();
+		this.draw();
 		this.lastUpdateTimestamp = now;
 	}
 };
@@ -85,6 +93,10 @@ Engine.prototype.updateObjects = function(dt) {
 
 Engine.prototype.draw = function () {
 	// Local function that draws on the client
+	this.context.canvas.width = "380px";
+	
+	this.context.fillStyle = 'black';
+	this.drawBackground();
 };
 
 
