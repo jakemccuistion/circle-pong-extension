@@ -87,8 +87,11 @@ BackgroundController.prototype.init = function()
                               undefined if there is no response.
  */
 BackgroundController.prototype.onExtensionRequest = function(request, sender, sendResponse) {
-  if (sender.tab && request.method == 'ParticipantsReceived') {
+  if (request.method == 'ParticipantsReceived') {
     console.log('Participants recieved', request.data);
+  }
+  else if (request.method == 'ParticipantsReceived') {
+    console.log('ChatRecieved', request.data);
   }
   sendResponse({}); // snub
 };
