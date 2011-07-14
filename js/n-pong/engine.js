@@ -11,11 +11,8 @@ Engine.prototype.init = function() {
 		this.lastUpdateTimestamp = null;
 		this.deltaTime = null;
 		this.ball = null;
-<<<<<<< HEAD
-=======
 		this.animationHandle = null;
->>>>>>> f1de96db3cf498ba2143ac416e2ae274b992d648
-	}
+}
 	
 Engine.prototype.addPlayer = function(player) {
 	var newPLayer = new Player( );
@@ -48,10 +45,7 @@ Engine.prototype.loop = function() {
 	this.deltaTime = now - this.lastUpdateTimestamp;
 	this.checkCollisions(deltaTime);
 	this.updateObjects(deltaTime);
-<<<<<<< HEAD
 	this.drawObjects();
-=======
->>>>>>> f1de96db3cf498ba2143ac416e2ae274b992d648
 	this.saveGameState();
 	this.transmitGameState();
 	this.lastUpdateTimestamp = now;
@@ -74,16 +68,13 @@ Engine.prototype.draw = function () {
  - Starts the game loop from running 
 */
 Engine.prototype.start = function () {
-	console.log("starting game with ____ as host")
+	console.log("starting game with ____ as host");
 	this.lastUpdateTimestamp = Date.now()
-	var self = this
+	var self = this;
 	(function gameLoop() {
 			self.loop();
-<<<<<<< HEAD
 			window.requestAnimationFrame(gameLoop, self.ctx.canvas);
-=======
-			this.animationHandle = window.requestAnimationFrame(gameLoop, self.ctx.canvas)
->>>>>>> f1de96db3cf498ba2143ac416e2ae274b992d648
+			this.animationHandle = window.requestAnimationFrame(gameLoop, self.ctx.canvas);
 	})();
 };
 
