@@ -19,7 +19,8 @@
   },
   "options_page": "options.html",
   "background_page": "background.html",
-  "content_scripts": [{
+  "content_scripts": [
+    {
       "matches": [
         "http://talkgadget.google.com/*",
         "https://talkgadget.google.com/*"
@@ -30,5 +31,17 @@
       ],
       "run_at": "document_end",
       "all_frames": true
-  }]
+    }, 
+    {
+      "matches": [
+        "https://googlesharedspaces.appspot.com/p/tuna*"
+       ],
+      "js": [
+        "js/functions.js",
+        "js/user_injection.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ]
 }

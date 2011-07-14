@@ -87,13 +87,10 @@ BackgroundController.prototype.init = function()
                               undefined if there is no response.
  */
 BackgroundController.prototype.onExtensionRequest = function(request, sender, sendResponse) {
-  if (sender.tab && request.method == 'GetVersion') {
-    console.log('Content Script requesting data for GetSomeMethod');
-    sendResponse({data: settings.version});
+  if (sender.tab && request.method == 'ParticipantsReceived') {
+    console.log('Participants recieved', request.data);
   }
-  else {
-    sendResponse({}); // snub
-  }
+  sendResponse({}); // snub
 };
 
 /**
