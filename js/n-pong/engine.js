@@ -7,16 +7,7 @@ window.requestAnimFrame = (function(){
 					window.oRequestAnimationFrame      || 
 					window.msRequestAnimationFrame     || 
 					function(/* function */ callback, /* DOMElement */ element){
-						window.setTimeout(callback, 1000 / 60);
-					};
-})();
-
-window.cancelAnimFrame = (function(){
-	return  window.cancelAnimationFrame       || 
-					window.webkitCancelAnimationFrame || 
-					window.mozCancelAnimationFrame    || 
-					function(/* function */ callback, /* DOMElement */ element){
-						window.clearTimeout(callback, 1000 / 60);
+						return window.setTimeout(callback, 1000 / 60);
 					};
 })();
 
@@ -34,7 +25,8 @@ Engine.prototype.init = function() {
 		this.deltaTime = null;
 		this.ball = new Ball();
 		this.animationHandle = null;
-		
+		this.running = null;
+		this.status = document.getElementById('status')
 		this.context = document.getElementById('gameboard').getContext("2d")
 }
 	
@@ -67,13 +59,15 @@ Engine.prototype.checkCollisions = function(deltaTime) {
 }
 
 Engine.prototype.loop = function() {
-	var now = Date.now();
-	this.deltaTime = now - this.lastUpdateTimestamp;
-	this.checkCollisions(this.deltaTime);
-	this.updateObjects(this.deltaTime);
-	this.saveGameState();
-	this.transmitGameState();
-	this.lastUpdateTimestamp = now;
+	if (this.running) {
+		var now = Date.now();
+		this.deltaTime = now - this.lastUpdateTimestamp;
+		this.checkCollisions(this.deltaTime);
+		this.updateObjects(this.deltaTime);
+		this.saveGameState();
+		this.transmitGameState();
+		this.lastUpdateTimestamp = now;
+	}
 };
 
 Engine.prototype.transmitGameState = function() {
@@ -84,7 +78,7 @@ Engine.prototype.updateObjects = function(dt) {
 	// Server function
 	this.ball.update(dt);
 	for (var i=0;i<this.players.length; i++) {
-		this.players[i].update();
+		this.players[i].update(dt);
 	}
 };
 
@@ -98,6 +92,7 @@ Engine.prototype.draw = function () {
 */
 Engine.prototype.start = function () {
 	console.log("starting game with ____ as host");
+	this.running = true;
 	this.lastUpdateTimestamp = Date.now()
 	var self = this;
 	(function gameLoop() {
@@ -109,8 +104,8 @@ Engine.prototype.start = function () {
 /*
  - Stops the game loop from running 
 */
-Engine.prototype.stop = function () {
-	window.cancelAnimFrame(this.animationHandle);
+Engine.prototype.pause = function () {
+	this.running = false;
 };
 
 Engine.prototype.saveGameState = function() {
