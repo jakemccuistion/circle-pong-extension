@@ -1,0 +1,30 @@
+{
+  "name": "Hangout Circle Pong",
+  "version": "0.0.1",
+  "description": "Hangout Circle Pong",
+  "icons": {
+    "16": "img/icon16.png",
+    "32": "img/icon32.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
+  },
+  "permissions": [
+    "tabs",
+    "http://talkgadget.google.com/*",
+    "https://talkgadget.google.com/*"
+   ],
+  "options_page": "options.html",
+  "background_page": "background.html",
+  "content_scripts": [{
+      "matches": [
+        "http://talkgadget.google.com/*",
+        "https://talkgadget.google.com/*"
+       ],
+      "js": [
+        "js/functions.js",
+        "js/injection.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": true
+  }]
+}
