@@ -26,8 +26,8 @@ PlayerUserController.prototype.onMoveEvent = function(dt) {
   - 
 */
 PlayerUserController.prototype.update = function(dt) {
-	/* take the buffered event left right
-	/* set goLeft or goRight
+	/* take the buffered event left right */
+	/* set goLeft or goRight */
 };
 
 
