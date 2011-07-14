@@ -73,6 +73,7 @@ BackgroundController.prototype.onUpdate = function(previous, current)
  */
 BackgroundController.prototype.init = function()
 {
+  chrome.browserAction.onClicked.addListener(this.onBrowserActionClicked.bind(this));
   chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
 };
 
@@ -93,4 +94,14 @@ BackgroundController.prototype.onExtensionRequest = function(request, sender, se
   else {
     sendResponse({}); // snub
   }
+};
+
+/**
+ * Listens when the browser action has been clicked. Opens up a new window to run the canvas.
+ *
+ * @param {Object} tab The current tab that the browser action is referring to.
+ */
+BackgroundController.prototype.onBrowserActionClicked = function(tab)
+{
+  chrome.windows.create({url: chrome.extension.getURL('game.html'), width: 500, height: 500, type: 'popup' });
 };
