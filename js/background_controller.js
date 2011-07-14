@@ -37,24 +37,18 @@ BackgroundController.prototype.onInstall = function()
       var tabs = windows[w].tabs;
       for (var t = 0; t < tabs.length; t++) {
         var tab = tabs[t];
-        if (this.isValidURL(tab.url)) { 
-          chrome.tabs.executeScript(tab.id, { file: '/js/injection.js',
-                                    allFrames: true });
+        if (url.indexOf('https://talkgadget.google.com/talkgadget') == 0) { 
+          chrome.tabs.executeScript(tab.id, { file: '/js/talk_injection.js' });
+        }
+        else if (url.indexOf('https://talkgadget.google.com/hangout') == 0) { 
+          chrome.tabs.executeScript(tab.id, { file: '/js/hangout_injection.js' });
+        }
+        else if (url.indexOf('https://googlesharedspaces.appspot.com/p/tuna') == 0) { 
+          chrome.tabs.executeScript(tab.id, { file: '/js/user_injection.js' });
         }
       }
     }
   });
-};
-
-/**
- * Check if the URL is a valid URL that we support for injection and processing.
- *
- * @param {string} url The URL to check.
- */
-BackgroundController.prototype.isValidURL = function(url)
-{
-  return (url.indexOf('https://talkgadget.google.com') == 0 ||
-      url.indexOf('http://talkgadget.google.com') == 0);
 };
 
 /**
