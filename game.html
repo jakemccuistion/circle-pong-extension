@@ -10,8 +10,11 @@
   <script type="text/javascript" src="/js/n-pong/ball.js"></script>
 </head>
 <body>
+	<script> 
+		var e;
+	</script>
   <h1>Game board</h1>
-  <button onclick="alert('hi');">Start</button>
+  <button onclick="e = new Engine();e.start()">Start</button>
   <canvas id="gameboard"></canvas>
 </body>
 </html>
