@@ -21,28 +21,24 @@ Engine.prototype.removePlayer = function(player) {
 	
 }
 
-Engine.prototype.updateObjects = function() {
-	
-}
-
-Engine.prototype.checkCollisions = function() {
+Engine.prototype.checkCollisions = function(deltaTime) {
 	
 }
 
 Engine.prototype.loop = function() {
 	var now = Date.now()
 	this.deltaTime = now - this.lastUpdateTimestamp;
-	this.checkCollisions();
-	this.updateObjects()
+	this.checkCollisions(deltaTime);
+	this.updateObjects(deltaTime);
 	this.drawObjects()
 	this.saveGameState();
 	this.transmitGameState();
 	this.lastUpdateTimestamp = now
 };
 
-Engine.prototype.updateObjects = function() {
+Engine.prototype.updateObjects = function(dt) {
 	// Server function
-	this.ball.update()
+	this.ball.update(dt)
 	for (var i=0;i<this.players.length; i++) {
 		this.players[i].update();
 	}
@@ -58,7 +54,7 @@ Engine.prototype.start = function () {
 	var self = this
 	(function gameLoop() {
 			self.loop();
-			requestAnimationFrame(gameLoop, self.ctx.canvas
+			window.requestAnimationFrame(gameLoop, self.ctx.canvas)
 	})();
 };
 
