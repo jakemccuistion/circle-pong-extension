@@ -59,9 +59,9 @@ Engine.prototype.getNumberOfSides = function() {
 }
 
 Engine.prototype.checkCollisions = function(deltaTime) {
-	this.context.fillStyle = 'blue';
-	this.context.fillRect(10, 20, 200, 100);
 
+	//this.context.fillStyle = 'blue';
+	//this.context.fillRect(10, 20, 200, 100);
 }
 
 Engine.prototype.loop = function() {
