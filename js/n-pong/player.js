@@ -25,6 +25,11 @@ Player.prototype.init = function(index){
 };
 
 
+Player.prototype.initDraw = function () {
+
+};
+
+
 /*
  - Update the postion of this object. called by the game state manager...
  - dt is the time elapsed since the last update call. 
@@ -41,8 +46,11 @@ Player.prototype.update = function(dt) {
 };
 
 /* After the Update we can draw owrselves on the */ 
-Player.prototype.draw = function(canvas, element) {
+Player.prototype.draw = function(context) {
 	/* translate the internal state to a position on the canvas and  */
 	//  look up the ordinal position.
+    context.save();
+    
+    context.restore();
 };
 

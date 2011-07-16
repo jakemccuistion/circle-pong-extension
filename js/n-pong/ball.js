@@ -2,7 +2,7 @@
  *  The Ball
  */
 Ball = function(){
-
+    this.init(null);
 };
 
 Ball.prototype.init = function(gameState){
@@ -11,6 +11,7 @@ Ball.prototype.init = function(gameState){
 	this.rot = 0; // orientation on the canvas
 	this.posX =0; // position on the canvas
 	this.posY =0;
+    this.radius = 10;
 
 	
 };
@@ -29,8 +30,14 @@ Ball.prototype.update = function(dt) {
 };
 
 /* After the Update we can draw owrselves on the */ 
-Ball.prototype.draw = function(canvas, element) {
+Ball.prototype.draw = function(context) {
 	/* translate the internal state to a position on the canvas and */
-	
+    context.save();
+	context.beginPath();
+    context.fillStyle = "red";
+    context.arc(this.posX, this.posY, this.radius, 0, Math.PI*2, false);
+    context.closePath()
+    context.fill();
+    context.restore();
 };
 

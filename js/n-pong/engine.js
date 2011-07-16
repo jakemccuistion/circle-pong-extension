@@ -1,4 +1,4 @@
- // shim layer with setTimeout fallback
+// // shim layer with setTimeout fallback
  // currently no way to stop it... boo :(
 window.requestAnimFrame = (function(){
 	return  window.requestAnimationFrame       || 
@@ -11,7 +11,6 @@ window.requestAnimFrame = (function(){
 					};
 })();
 
-// Inspired by Seth Ladd's demo code
 Engine = function () {
 	this.init();
 };
@@ -31,10 +30,7 @@ Engine.prototype.init = function() {
 }
 
 Engine.prototype.drawBackground = function() {
-		this.context.beginPath();
-		this.context.arc(190, 190, 190, 0, Math.PI*2, false);
-		this.context.closePath();
-		this.context.fill();
+
 }
 
 Engine.prototype.addPlayer = function(player) {
@@ -91,10 +87,12 @@ Engine.prototype.updateObjects = function(dt) {
 
 Engine.prototype.draw = function () {
 	// Local function that draws on the client
-	this.context.canvas.width = "380px";
+    var ctx = this.context;
+	//ctx.canvas.width = "380px"; // clears the canvas
 	
-	this.context.fillStyle = 'black';
+	ctx.fillStyle = 'black';
 	this.drawBackground();
+    this.ball.draw(ctx);
 };
 
 
