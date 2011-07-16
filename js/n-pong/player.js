@@ -1,12 +1,11 @@
 /**
- *  The Player
+ *  The Player, well the paddle :)
  */
 Player = function( playerData,  gameState, playerController ){
 	this.playerData = playerData; // don't know what this looks like right now.. some data about who this is...
 	this.posOnSegment = 0.5;    // 0 to 1 0 = left hds 1, = rhs. The extend along the side of the n-gon
 	this.rot = 0; // orientation on the canvas
-	this.pos.x =0; // position on the canvas
-	this.pos.y = 0; 
+	this.pos = { x:0, y:0 }; // position on the canvas
 	this.gameState= gameState;
 	this.playerController; // tells the player if s/he's going left or right on this tick
     // These are to increase the speed of drawing
@@ -19,12 +18,15 @@ Player = function( playerData,  gameState, playerController ){
 Player.prototype.init = function(index){
 	this.sideIndex = index;
 	this.origin = this.gameState.getOrdinalPosition(this.sideIndex);
-	var nextOrdinalPostion = this.gameState.getOrdinalPosition (this.sideIndex + 1);	
-	
+	var nextOrdinalPosition = this.gameState.getOrdinalPosition (this.sideIndex + 1);	
+	console.log( 'Origin x:' + this.origin.x);
+	console.log( 'Origin y:' + this.origin.y);
+	console.log( 'Next x:' + nextOrdinalPosition.x);
+	console.log( 'Next y:' + nextOrdinalPosition.y);		
 	
 	// this represents the players line along which the player can travel in position on the 
-	this.segment = { x:nextOrdninalPosition.x - this.origin.x, 
-				     y:nextOrdninalPosition.y - this.origin.y }; 
+	this.segment = { x:nextOrdinalPosition.x - this.origin.x, 
+				     y:nextOrdinalPosition.y - this.origin.y }; 
 
 };
 

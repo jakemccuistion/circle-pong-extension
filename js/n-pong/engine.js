@@ -27,6 +27,10 @@ Engine.prototype.init = function() {
 		this.running = null;
 		this.status = document.getElementById('status')
 		this.context = document.getElementById('gameboard').getContext("2d")
+		
+		this.addPlayer('john');
+		this.addPlayer('james');
+		this.addPlayer('mohamed');
 }
 
 Engine.prototype.drawBackground = function() {
@@ -36,10 +40,10 @@ Engine.prototype.drawBackground = function() {
 Engine.prototype.addPlayer = function(player) {
 	var controller = new PlayerUserController(); // Default to user controller.
 	controller.init( this );
-	var newPlayer = new Player( player, this, controller );
+	var newPlayer = new Player(player, this, controller);
 	// 
 	this.players.push(newPlayer);
-	for ( var i = 0; i < players.length; i++){
+	for ( var i = 0; i < this.players.length; i++){
 		this.players[i].init(i);		
 	}	
 }
@@ -54,10 +58,25 @@ Engine.prototype.getNumberOfSides = function() {
 	return this.players.length;
 }
 
+Engine.prototype.getOrdinalPosition = function(index) {
+	var n = this.getNumberOfSides(); 
+	if ( index > n ){
+		index = 0;
+	} 
+	
+	var radianInterval = ( 2*Math.PI/n ) * index;
+	var xMid = 200 / 2;  // TODO: Update with actual dimensions!
+	var yMid = 200 /2 ;
+	var xScale = 0.75;
+	var yScale = 0.75;
+	// In each dimension recenter the unit circle at the middle of canvas and scale it u
+	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * xMid * xScale + yMid }
+	
+}
+
 Engine.prototype.checkCollisions = function(deltaTime) {
 
-	//this.context.fillStyle = 'blue';
-	//this.context.fillRect(10, 20, 200, 100);
+
 }
 
 Engine.prototype.loop = function() {
@@ -94,6 +113,8 @@ Engine.prototype.draw = function () {
 	this.drawBackground();
     this.ball.draw(ctx);
 };
+
+
 
 
 /*
