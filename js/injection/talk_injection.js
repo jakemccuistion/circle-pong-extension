@@ -1,15 +1,15 @@
 /**
  *
  */
-hangout.TalkInjection = function() {
+hangout.injection.TalkInjection = function() {
 };
 
 /**
  * Initilaization routine for first load.
  */
-hangout.TalkInjection.prototype.init = function() {
+hangout.injection.TalkInjection.prototype.init = function() {
   chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
-  var history = document.getElementById('history');
+  var history = $('history');
   history.addEventListener('DOMSubtreeModified', this.onHistoryReceieved.bind(this), false);
 
 };
@@ -17,7 +17,7 @@ hangout.TalkInjection.prototype.init = function() {
 /**
  * History on the Chat console received.
  */
-hangout.TalkInjection.prototype.onHistoryReceieved = function(e) {
+hangout.injection.TalkInjection.prototype.onHistoryReceieved = function(e) {
   var message = e.target.querySelector('.wackmsg_new_sender');
   if (message) {
     chrome.extension.sendRequest({method: 'ChatRecieved', data: message.innerText});
@@ -39,7 +39,7 @@ hangout.TalkInjection.prototype.onHistoryReceieved = function(e) {
                               argument should be any JSON-ifiable object, or
                               undefined if there is no response.
  */
-hangout.TalkInjection.prototype.onExtensionRequest = function(request, sender, sendResponse) {
+hangout.injection.TalkInjection.prototype.onExtensionRequest = function(request, sender, sendResponse) {
   if (request.method == 'somecommand') {
   
   }
@@ -47,5 +47,5 @@ hangout.TalkInjection.prototype.onExtensionRequest = function(request, sender, s
 };
 
 // Main Content Script injection
-var injection = new hangout.TalkInjection();
+var injection = new hangout.injection.TalkInjection();
 injection.init();

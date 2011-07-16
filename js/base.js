@@ -12,6 +12,7 @@ function $(id) {
  * @const
  */
 var hangout = hangout || {};
+hangout.injection = hangout.injection || {};
 
 /**
  * Inherit the prototype methods from one constructor into another.
