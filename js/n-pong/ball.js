@@ -24,9 +24,9 @@ Ball.prototype.init = function(gameState){
 Ball.prototype.update = function(dt) {
 
 	//Update the position. 
+	this.posX = this.posX + (this.vel.x * dt);
+    this.posY = this.posY + (this.vel.y * dt);
 	
-	// set the coordinates on the canvas
-
 };
 
 /* After the Update we can draw owrselves on the */ 
