@@ -89,7 +89,7 @@ Engine.prototype.draw = function () {
 	// Local function that draws on the client
     var ctx = this.context;
 	//ctx.canvas.width = "380px"; // clears the canvas
-	
+	document.getElementById('gameboard').width = document.getElementById('gameboard').width;
 	ctx.fillStyle = 'black';
 	this.drawBackground();
     this.ball.draw(ctx);
