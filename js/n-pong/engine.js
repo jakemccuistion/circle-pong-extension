@@ -70,7 +70,7 @@ Engine.prototype.getOrdinalPosition = function(index) {
 	var xScale = 0.75;
 	var yScale = 0.75;
 	// In each dimension recenter the unit circle at the middle of canvas and scale it u
-	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * xMid * xScale + yMid }
+	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * yMid * yScale + yMid }
 	
 }
 
