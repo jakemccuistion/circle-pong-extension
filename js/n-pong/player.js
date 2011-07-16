@@ -9,6 +9,10 @@ Player = function( playerData,  gameState, playerController ){
 	this.pos.y = 0; 
 	this.gameState= gameState;
 	this.playerController; // tells the player if s/he's going left or right on this tick
+    // These are to increase the speed of drawing
+    // Offscreen canvases for caching
+    this.picCanvas;
+    this.paddleCanvas;
 
 };
 
@@ -25,8 +29,21 @@ Player.prototype.init = function(index){
 };
 
 
-Player.prototype.initDraw = function () {
-
+Player.prototype.initDraw = function (imageSrc) {
+    this.picCanvas = document.createElement("canvas");
+    var ctx = this.picCanvas.getContext("2d");
+    var pic = new Image();
+    pic.src = imageSrc;
+    pic.onload = function() {
+        ctx.drawImage(pic, 0, 0);
+    }
+    
+    this.paddleCanvas = document.createElement("canvas");
+    var p_ctx = this.paddleCanvas.getContext("2d");
+    // draw paddle here
+    // consider promoting this to the engine since we
+    // only need one paddle canvas for everyone
+    // and can redraw
 };
 
 
