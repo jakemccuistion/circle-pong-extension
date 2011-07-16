@@ -1,6 +1,6 @@
-// // shim layer with setTimeout fallback
+ // shim layer with setTimeout fallback
  // currently no way to stop it... boo :(
-window.requestAnimFrame = (function(){
+window.requestAnimFrame = (function() {
 	return  window.requestAnimationFrame       || 
 					window.webkitRequestAnimationFrame || 
 					window.mozRequestAnimationFrame    || 
@@ -37,8 +37,8 @@ Engine.prototype.drawBackground = function() {
 
 }
 
-Engine.prototype.addPlayer = function(player) {
-	var controller = new PlayerUserController(); // Default to user controller.
+hangout.Engine.prototype.addPlayer = function(player) {
+	var controller = new hangout.pong.PlayerUserController(); // Default to user controller.
 	controller.init( this );
 	var newPlayer = new Player(player, this, controller);
 	// 
@@ -48,13 +48,13 @@ Engine.prototype.addPlayer = function(player) {
 	}	
 }
 
-Engine.prototype.removePlayer = function(player) {
+hangout.Engine.prototype.removePlayer = function(player) {
 	
 }
 
 
 // feel free to rename this...
-Engine.prototype.getNumberOfSides = function() {
+hangout.Engine.prototype.getNumberOfSides = function() {
 	return this.players.length;
 }
 
@@ -76,10 +76,9 @@ Engine.prototype.getOrdinalPosition = function(index) {
 
 Engine.prototype.checkCollisions = function(deltaTime) {
 
-
 }
 
-Engine.prototype.loop = function() {
+hangout.Engine.prototype.loop = function() {
 	if (this.running) {
 		var now = Date.now();
 		this.deltaTime = now - this.lastUpdateTimestamp;
@@ -92,11 +91,11 @@ Engine.prototype.loop = function() {
 	}
 };
 
-Engine.prototype.transmitGameState = function() {
+hangout.Engine.prototype.transmitGameState = function() {
 	
 };
 
-Engine.prototype.updateObjects = function(dt) {
+hangout.Engine.prototype.updateObjects = function(dt) {
 	// Server function
 	this.ball.update(dt);
 	for (var i=0;i<this.players.length; i++) {
@@ -104,7 +103,7 @@ Engine.prototype.updateObjects = function(dt) {
 	}
 };
 
-Engine.prototype.draw = function () {
+hangout.Engine.prototype.draw = function () {
 	// Local function that draws on the client
     var ctx = this.context;
 	//ctx.canvas.width = "380px"; // clears the canvas
@@ -120,7 +119,7 @@ Engine.prototype.draw = function () {
 /*
  - Starts the game loop from running 
 */
-Engine.prototype.start = function () {
+hangout.Engine.prototype.start = function () {
 	console.log("starting game with ____ as host");
 	this.running = true;
 	this.lastUpdateTimestamp = Date.now()
@@ -134,10 +133,10 @@ Engine.prototype.start = function () {
 /*
  - Stops the game loop from running 
 */
-Engine.prototype.pause = function () {
+hangout.Engine.prototype.pause = function () {
 	this.running = false;
 };
 
-Engine.prototype.saveGameState = function() {
+hangout.Engine.prototype.saveGameState = function() {
 	// only host should run this function
 };

@@ -5,15 +5,13 @@ Ball = function(){
     this.init(null);
 };
 
-Ball.prototype.init = function(gameState){
-	this.gameState= gameState;
+hangout.pong.Ball.prototype.init = function(gameState) {
+	this.gameState = gameState;
 	this.vel = {x:0, y:0};
 	this.rot = 0; // orientation on the canvas
 	this.posX =0; // position on the canvas
 	this.posY =0;
     this.radius = 10;
-
-	
 };
 
 
@@ -21,7 +19,7 @@ Ball.prototype.init = function(gameState){
  - Update the postion of this object. called by the game state manager...
  - dt is the time elapsed since the last update call. 
 */
-Ball.prototype.update = function(dt) {
+hangout.pong.Ball.prototype.update = function(dt) {
 
 	//Update the position. 
 	this.posX = this.posX + (this.vel.x * dt);
