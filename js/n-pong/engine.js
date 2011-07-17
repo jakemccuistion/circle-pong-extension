@@ -21,12 +21,13 @@ hangout.pong.Engine.prototype.init = function() {
   this.collisionManager = null;
   this.lastUpdateTimestamp = null;
   this.deltaTime = null;
-  this.ball = new hangout.pong.Ball();
   this.animationHandle = null;
   this.running = null;
   this.status = document.getElementById('status');
   this.canvas = document.getElementById('gameboard');
   this.context = this.canvas.getContext("2d")
+
+  this.ball = new hangout.pong.Ball(this);
 
   this.addPlayer('john');
   this.addPlayer('james');
