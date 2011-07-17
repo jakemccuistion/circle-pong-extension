@@ -1,6 +1,6 @@
-// // shim layer with setTimeout fallback
+ // shim layer with setTimeout fallback
  // currently no way to stop it... boo :(
-window.requestAnimFrame = (function(){
+window.requestAnimFrame = (function() {
 	return  window.requestAnimationFrame       || 
 					window.webkitRequestAnimationFrame || 
 					window.mozRequestAnimationFrame    || 
@@ -11,60 +11,59 @@ window.requestAnimFrame = (function(){
 					};
 })();
 
-Engine = function () {
+hangout.pong.Engine = function () {
 	this.init();
 };
 
 
-Engine.prototype.init = function() {
-		this.players = [];
-		this.collisionManager = null;
-		this.context = null;
-		this.lastUpdateTimestamp = null;
-		this.deltaTime = null;
-		this.ball = new Ball();
-		this.animationHandle = null;
-		this.running = null;
-		this.status = document.getElementById('status')
-		this.context = document.getElementById('gameboard').getContext("2d")
-		
-		this.addPlayer('john');
-		this.addPlayer('james');
-		this.addPlayer('mohamed');
-}
+hangout.pong.Engine.prototype.init = function() {
+  this.players = [];
+  this.collisionManager = null;
+  this.context = null;
+  this.lastUpdateTimestamp = null;
+  this.deltaTime = null;
+  this.ball = new hangout.pong.Ball();
+  this.animationHandle = null;
+  this.running = null;
+  this.status = document.getElementById('status')
+  this.context = document.getElementById('gameboard').getContext("2d")
+  this.addPlayer('john');
+  this.addPlayer('james');
+  this.addPlayer('mohamed');
+};
 
-Engine.prototype.drawBackground = function() {
+hangout.pong.Engine.prototype.drawBackground = function() {
 
-}
+};
 
-Engine.prototype.addPlayer = function(player) {
-	var controller = new PlayerUserController(); // Default to user controller.
-	controller.init( this );
-	var newPlayer = new Player(player, this, controller);
+hangout.pong.Engine.prototype.addPlayer = function(player) {
+	var controller = new hangout.pong.PlayerUserController(); // Default to user controller.
+	controller.init(this);
+	var newPlayer = new hangout.pong.Player(player, this, controller);
 	// 
 	this.players.push(newPlayer);
-	for ( var i = 0; i < this.players.length; i++){
+	for (var i = 0; i < this.players.length; i++) {
 		this.players[i].init(i);		
 	}	
-}
+};
 
-Engine.prototype.removePlayer = function(player) {
+hangout.pong.Engine.prototype.removePlayer = function(player) {
 	
-}
+};
 
 
 // feel free to rename this...
-Engine.prototype.getNumberOfSides = function() {
+hangout.pong.Engine.prototype.getNumberOfSides = function() {
 	return this.players.length;
-}
+};
 
-Engine.prototype.getOrdinalPosition = function(index) {
+hangout.pong.Engine.prototype.getOrdinalPosition = function(index) {
 	var n = this.getNumberOfSides(); 
-	if ( index > n ){
+	if (index > n) {
 		index = 0;
 	} 
 	
-	var radianInterval = ( 2*Math.PI/n ) * index;
+	var radianInterval = (2*Math.PI/n) * index;
 	var xMid = 200 / 2;  // TODO: Update with actual dimensions!
 	var yMid = 200 /2 ;
 	var xScale = 0.75;
@@ -72,14 +71,13 @@ Engine.prototype.getOrdinalPosition = function(index) {
 	// In each dimension recenter the unit circle at the middle of canvas and scale it u
 	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * yMid * yScale + yMid }
 	
-}
+};
 
-Engine.prototype.checkCollisions = function(deltaTime) {
+hangout.pong.Engine.prototype.checkCollisions = function(deltaTime) {
 
+};
 
-}
-
-Engine.prototype.loop = function() {
+hangout.pong.Engine.prototype.loop = function() {
 	if (this.running) {
 		var now = Date.now();
 		this.deltaTime = now - this.lastUpdateTimestamp;
@@ -92,26 +90,26 @@ Engine.prototype.loop = function() {
 	}
 };
 
-Engine.prototype.transmitGameState = function() {
+hangout.pong.Engine.prototype.transmitGameState = function() {
 	
 };
 
-Engine.prototype.updateObjects = function(dt) {
+hangout.pong.Engine.prototype.updateObjects = function(dt) {
 	// Server function
 	this.ball.update(dt);
-	for (var i=0;i<this.players.length; i++) {
+	for (var i = 0; i < this.players.length; i++) {
 		this.players[i].update(dt);
 	}
 };
 
-Engine.prototype.draw = function () {
+hangout.pong.Engine.prototype.draw = function () {
 	// Local function that draws on the client
-    var ctx = this.context;
+  var ctx = this.context;
 	//ctx.canvas.width = "380px"; // clears the canvas
-	document.getElementById('gameboard').width = document.getElementById('gameboard').width;
+	$('gameboard').width = $('gameboard').width;
 	ctx.fillStyle = 'black';
 	this.drawBackground();
-    this.ball.draw(ctx);
+  this.ball.draw(ctx);
 };
 
 
@@ -120,7 +118,7 @@ Engine.prototype.draw = function () {
 /*
  - Starts the game loop from running 
 */
-Engine.prototype.start = function () {
+hangout.pong.Engine.prototype.start = function () {
 	console.log("starting game with ____ as host");
 	this.running = true;
 	this.lastUpdateTimestamp = Date.now()
@@ -134,10 +132,10 @@ Engine.prototype.start = function () {
 /*
  - Stops the game loop from running 
 */
-Engine.prototype.pause = function () {
+hangout.pong.Engine.prototype.pause = function () {
 	this.running = false;
 };
 
-Engine.prototype.saveGameState = function() {
+hangout.pong.Engine.prototype.saveGameState = function() {
 	// only host should run this function
 };

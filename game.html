@@ -4,8 +4,9 @@
   <title>Circle Pong for Google Plus</title>
   <link rel="stylesheet" type="text/css" href="/css/common.css" />
   <link rel="stylesheet" type="text/css" href="/css/game.css" />
-  <script type="text/javascript" src="/js/functions.js"></script>
+  <script type="text/javascript" src="/js/base.js"></script>
   <script type="text/javascript" src="/js/game.js"></script>
+  <script type="text/javascript" src="/js/n-pong/base.js"></script>
   <script type="text/javascript" src="/js/n-pong/engine.js"></script>
   <script type="text/javascript" src="/js/n-pong/ball.js"></script>
   <script type="text/javascript" src="/js/n-pong/player.js"></script> 
@@ -16,7 +17,7 @@
 		var e;
 	</script>
   <h1>Game board</h1>
-  <button onclick="e = new Engine();e.start()">Start</button>
+  <button onclick="e = new hangout.pong.Engine();e.start()">Start</button>
   <canvas id="gameboard" width="380px" height="380px" style="border:1px dotted;"></canvas>
   <div id="status"></div>
 </body>

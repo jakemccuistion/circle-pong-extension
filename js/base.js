@@ -12,10 +12,11 @@ function $(id) {
  * @const
  */
 var hangout = hangout || {};
+hangout.injection = hangout.injection || {};
 
 /**
  * Inherit the prototype methods from one constructor into another.
- * Borrowed from the Closure Library.
+ * Borrowed from Closure Library.
  *
  * @param {Function} childCtor Child class.
  * @param {Function} parentCtor Parent class.

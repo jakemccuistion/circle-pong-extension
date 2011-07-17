@@ -1,8 +1,7 @@
 /**
  * User Injection to figure out how many users exist here,
  */
-UserInjection = function()
-{
+hangout.injection.UserInjection = function() {
   this.exportEvent = document.createEvent('Event');
   this.exportEvent.initEvent('particpantExported', true, true);
   this.transferDOM = this.createTransferDOM();
@@ -12,8 +11,7 @@ UserInjection = function()
  * Constructs the transfer DOM that will be used to send data from content script
  * and dom world.
  */
-UserInjection.prototype.createTransferDOM = function()
-{
+hangout.injection.UserInjection.prototype.createTransferDOM = function() {
   var transferDOM = document.createElement('div');
   transferDOM.setAttribute('id', 'transfer-dom-area');
   transferDOM.style.display = 'none';
@@ -24,8 +22,7 @@ UserInjection.prototype.createTransferDOM = function()
 /**
  * Initilaization routine for first load.
  */
-UserInjection.prototype.init = function()
-{
+hangout.injection.UserInjection.prototype.init = function() {
   document.body.appendChild(this.transferDOM);
   window.addEventListener('particpantExported', this.particpantExported.bind(this));
   chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
@@ -34,9 +31,8 @@ UserInjection.prototype.init = function()
 /**
  * When the participant is exported this will be called.
  */
-UserInjection.prototype.particpantExported = function()
-{
-  var transferDOM = document.getElementById('transfer-dom-area');
+hangout.injection.UserInjection.prototype.particpantExported = function() {
+  var transferDOM = $('transfer-dom-area');
   var participantsMap = JSON.parse(transferDOM.text());
   chrome.extension.sendRequest({method: 'ParticipantsReceived', data: participantsMap});
 };
@@ -45,8 +41,7 @@ UserInjection.prototype.particpantExported = function()
 /**
  * Try to read the DOM's world JS variables
  */
-UserInjection.prototype.fetchParticipantsList = function()
-{
+hangout.injection.UserInjection.prototype.fetchParticipantsList = function() {
   var postParticipantsMap = function() {
     // Use events to notify the content script. Replicate the event the content
     // script has, so we can pass this event to that world.
@@ -78,14 +73,13 @@ UserInjection.prototype.fetchParticipantsList = function()
                               argument should be any JSON-ifiable object, or
                               undefined if there is no response.
  */
-UserInjection.prototype.onExtensionRequest = function(request, sender, sendResponse) {
+hangout.injection.UserInjection.prototype.onExtensionRequest = function(request, sender, sendResponse) {
   if (request.method == 'GetUserList') {
-    this.fetchParticipantsList();
   }
   sendResponse({});
 };
 
 // Main Content Script injection
-var injection = new UserInjection();
+var injection = new hangout.injection.UserInjection();
 injection.init();
 injection.fetchParticipantsList();
