@@ -28,7 +28,8 @@
         "js/base.js",
         "js/injection/talk_injection.js"
       ],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "all_frames": true
     }, 
     {
       "matches": [
@@ -38,7 +39,8 @@
         "js/base.js",
         "js/injection/hangout_injection.js"
       ],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "all_frames": true
     }, 
     {
       "matches": [
@@ -48,7 +50,8 @@
         "js/base.js",
         "js/injection/user_injection.js"
       ],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "all_frames": true
     }
   ]
 }

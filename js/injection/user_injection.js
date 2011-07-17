@@ -26,6 +26,7 @@ hangout.injection.UserInjection.prototype.init = function() {
   document.body.appendChild(this.transferDOM);
   window.addEventListener('particpantExported', this.particpantExported.bind(this));
   chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
+  this.injectParticipantsExtraction();
 };
 
 /**
@@ -33,7 +34,7 @@ hangout.injection.UserInjection.prototype.init = function() {
  */
 hangout.injection.UserInjection.prototype.particpantExported = function() {
   var transferDOM = $('transfer-dom-area');
-  var participantsMap = JSON.parse(transferDOM.text());
+  var participantsMap = JSON.parse(transferDOM.innerText);
   chrome.extension.sendRequest({method: 'ParticipantsReceived', data: participantsMap});
 };
 
@@ -41,7 +42,7 @@ hangout.injection.UserInjection.prototype.particpantExported = function() {
 /**
  * Try to read the DOM's world JS variables
  */
-hangout.injection.UserInjection.prototype.fetchParticipantsList = function() {
+hangout.injection.UserInjection.prototype.injectParticipantsExtraction = function() {
   var postParticipantsMap = function() {
     // Use events to notify the content script. Replicate the event the content
     // script has, so we can pass this event to that world.
@@ -51,10 +52,16 @@ hangout.injection.UserInjection.prototype.fetchParticipantsList = function() {
     // Create a transfer node DOM, since that is the only way two worlds can
     // communicate with each other.
     var transferDOM = document.getElementById('transfer-dom-area');
-    transferDOM.innerText = JSON.stringify(gadgetManager.participants);
+
+    // Listen on new updated participants. Inform our content script that we 
+    // have received the object from Google.
+    // TODO(mohamed): there should be a way to override gadgetManager.updateParticipants
+    var participantFinder = function() {
+      transferDOM.innerText = JSON.stringify(gadgetManager.participants);
+      window.dispatchEvent(exportParticipantEvent);
+    };
     
-    // Inform our content script that we have received the object from Google.
-    window.dispatchEvent(exportParticipantEvent);
+    setTimeout(participantFinder, 5000);
   };
   
   // Start injecting the JS script.
@@ -82,4 +89,3 @@ hangout.injection.UserInjection.prototype.onExtensionRequest = function(request,
 // Main Content Script injection
 var injection = new hangout.injection.UserInjection();
 injection.init();
-injection.fetchParticipantsList();
