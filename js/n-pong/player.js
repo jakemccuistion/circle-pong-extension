@@ -17,16 +17,13 @@ hangout.pong.Player = function( playerData,  gameState, playerController ) {
 
 hangout.pong.Player.prototype.init = function(index) {
 	this.sideIndex = index;
-	this.origin = this.gameState.getOrdinalPosition(this.sideIndex);
-	var nextOrdinalPosition = this.gameState.getOrdinalPosition (this.sideIndex + 1);	
-	console.log('Origin x:' + this.origin.x);
-	console.log('Origin y:' + this.origin.y);
-	console.log('Next x:' + nextOrdinalPosition.x);
-	console.log('Next y:' + nextOrdinalPosition.y);		
+	this.origin = this.getOrdinalPosition(this.sideIndex,this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);
+	var nextOrdinalPosition = this.getOrdinalPosition (this.sideIndex + 1, this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);	
+	this.rot = Math.PI*2/this.gameState.getNumberOfSides()*this.sideIndex + Math.PI/2;
 	
 	// this represents the players line along which the player can travel in position on the 
 	this.segment = { x:nextOrdinalPosition.x - this.origin.x, 
-      y:nextOrdinalPosition.y - this.origin.y }; 
+      				 y:nextOrdinalPosition.y - this.origin.y }; 
 
 };
 
@@ -56,10 +53,9 @@ hangout.pong.Player.prototype.initDraw = function (imageSrc) {
 hangout.pong.Player.prototype.update = function(dt) {
 	this.playerController.update(dt);
 	
-	// Update the position. based on what the controll says.
+	// Update the position based on what the controll says.
 	
 	// set the coordinates on the canvas
-	
 	this.pos.x = this.origin.x + this.segment.x * this.posOnSegment;
 	this.pos.y = this.origin.y + this.segment.y * this.posOnSegment;	
 };
@@ -68,10 +64,30 @@ hangout.pong.Player.prototype.update = function(dt) {
  * After the Update we can draw owrselves on the
  */ 
 hangout.pong.Player.prototype.draw = function(context) {
-	/* translate the internal state to a position on the canvas and  */
-	//  look up the ordinal position.
-  context.save();
-  
-  context.restore();
+	context.save();
+	context.translate(this.pos.x,this.pos.y)
+	context.rotate(this.rot);
+	
+	///PLACEHOLDER:  Just write the registered name along the corresponding side
+	var segLength = Math.sqrt(this.segment.x*this.segment.x + this.segment.y*this.segment.y)
+	context.fillText(this.playerData,-segLength/2,0);
+	//END
+	
+	context.restore();
+};
+
+hangout.pong.Player.prototype.getOrdinalPosition = function(index, numSides, width, height) {
+	if (index > numSides) {
+		index = 0;
+	} 
+	
+	var radianInterval = (2*Math.PI/numSides)*index;
+	var xMid = width/2;  // TODO: Update with actual dimensions!
+	var yMid = height/2;
+	var xScale = 0.75;
+	var yScale = 0.75;
+	// In each dimension recenter the unit circle at the middle of canvas and scale it u
+	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * yMid * yScale + yMid }
+	
 };
 

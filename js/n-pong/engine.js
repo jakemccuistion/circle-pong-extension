@@ -19,17 +19,22 @@ hangout.pong.Engine = function () {
 hangout.pong.Engine.prototype.init = function() {
   this.players = [];
   this.collisionManager = null;
-  this.context = null;
   this.lastUpdateTimestamp = null;
   this.deltaTime = null;
   this.ball = new hangout.pong.Ball();
   this.animationHandle = null;
   this.running = null;
-  this.status = document.getElementById('status')
-  this.context = document.getElementById('gameboard').getContext("2d")
+  this.status = document.getElementById('status');
+  this.canvas = document.getElementById('gameboard');
+  this.context = this.canvas.getContext("2d")
+
   this.addPlayer('john');
   this.addPlayer('james');
   this.addPlayer('mohamed');
+  this.addPlayer('kaleb');
+  this.addPlayer('robert');
+  this.addPlayer('krios');
+
 };
 
 hangout.pong.Engine.prototype.drawBackground = function() {
@@ -55,22 +60,6 @@ hangout.pong.Engine.prototype.removePlayer = function(player) {
 // feel free to rename this...
 hangout.pong.Engine.prototype.getNumberOfSides = function() {
 	return this.players.length;
-};
-
-hangout.pong.Engine.prototype.getOrdinalPosition = function(index) {
-	var n = this.getNumberOfSides(); 
-	if (index > n) {
-		index = 0;
-	} 
-	
-	var radianInterval = (2*Math.PI/n) * index;
-	var xMid = 200 / 2;  // TODO: Update with actual dimensions!
-	var yMid = 200 /2 ;
-	var xScale = 0.75;
-	var yScale = 0.75;
-	// In each dimension recenter the unit circle at the middle of canvas and scale it u
-	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * yMid * yScale + yMid }
-	
 };
 
 hangout.pong.Engine.prototype.checkCollisions = function(deltaTime) {
@@ -104,12 +93,14 @@ hangout.pong.Engine.prototype.updateObjects = function(dt) {
 
 hangout.pong.Engine.prototype.draw = function () {
 	// Local function that draws on the client
-  var ctx = this.context;
-	//ctx.canvas.width = "380px"; // clears the canvas
-	$('gameboard').width = $('gameboard').width;
-	ctx.fillStyle = 'black';
-	this.drawBackground();
-  this.ball.draw(ctx);
+	var ctx = this.context;
+	this.canvas.width = this.canvas.width;
+  	ctx.fillStyle = 'black';
+  	this.drawBackground();
+  	this.ball.draw(ctx);
+  	for (var i = 0; i < this.players.length; i++) {
+		this.players[i].draw(ctx);
+  	}
 };
 
 
