@@ -56,12 +56,21 @@ hangout.injection.UserInjection.prototype.injectParticipantsExtraction = functio
     // Listen on new updated participants. Inform our content script that we 
     // have received the object from Google.
     // TODO(mohamed): there should be a way to override gadgetManager.updateParticipants
+    //                but somehow the following override doesn't work
+    //
+    //                var oldUpdateParticipants = gadgetManager.updateParticipants;
+    //                gadgetManager.updateParticipants = function(participants) {
+    //                  transferDOM.innerText = JSON.stringify(participants);
+    //                  window.dispatchEvent(exportParticipantEvent);
+    //                  oldUpdateParticipants();
+    //                };
+    //
     var participantFinder = function() {
       transferDOM.innerText = JSON.stringify(gadgetManager.participants);
       window.dispatchEvent(exportParticipantEvent);
+      setTimeout(participantFinder, 5000);
     };
-    
-    setTimeout(participantFinder, 5000);
+    participantFinder();
   };
   
   // Start injecting the JS script.
