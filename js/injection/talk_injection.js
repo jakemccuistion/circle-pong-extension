@@ -8,10 +8,15 @@ hangout.injection.TalkInjection = function() {
  * Initilaization routine for first load.
  */
 hangout.injection.TalkInjection.prototype.init = function() {
-  chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
-  var history = $('history');
-  history.addEventListener('DOMSubtreeModified', this.onHistoryReceieved.bind(this), false);
+  setTimeout(this.lazyLoadChatList.bind(this), 10000);
+};
 
+hangout.injection.TalkInjection.prototype.lazyLoadChatList = function() {
+  var history = $('history');
+  if (history) {
+    chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
+    history.addEventListener('DOMSubtreeModified', this.onHistoryReceieved.bind(this), false);
+  }
 };
 
 /**
@@ -21,10 +26,6 @@ hangout.injection.TalkInjection.prototype.onHistoryReceieved = function(e) {
   var message = e.target.querySelector('.wackmsg_new_sender');
   if (message) {
     chrome.extension.sendRequest({method: 'ChatRecieved', data: message.innerText});
-    alert('zombie' + message.innerText);
-  }
-  else {
-    alert('insane');
   }
 };
 

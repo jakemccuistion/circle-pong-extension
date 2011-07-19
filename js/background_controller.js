@@ -85,7 +85,7 @@ BackgroundController.prototype.onExtensionRequest = function(request, sender, se
   if (request.method == 'ParticipantsReceived') {
     console.log('Participants recieved', request.data);
   }
-  else if (request.method == 'ParticipantsReceived') {
+  else if (request.method == 'ChatRecieved') {
     console.log('ChatRecieved', request.data);
   }
   sendResponse({}); // snub
