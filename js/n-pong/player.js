@@ -1,9 +1,9 @@
 /**
- *  The Player, well the paddle :)
+ *  The Player, well the paddle :) TOOO: Implement extends from gameObject
  */
 hangout.pong.Player = function( playerData,  gameState, playerController ) {
 	this.playerData = playerData; // don't know what this looks like right now.. some data about who this is...
-	this.posOnSegment = 0.5;    // 0 to 1 0 = left hds 1, = rhs. The extend along the side of the n-gon
+	this.posOnSide = 0.5;    // [0..1] 0 = on the origin,  1 =  origin + side
 	this.rot = 0; // orientation on the canvas
 	this.pos = { x:0, y:0 }; // position on the canvas
 	this.gameState= gameState;
@@ -17,12 +17,13 @@ hangout.pong.Player = function( playerData,  gameState, playerController ) {
 
 hangout.pong.Player.prototype.init = function(index) {
 	this.sideIndex = index;
-	this.origin = this.getOrdinalPosition(this.sideIndex,this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);
-	var nextOrdinalPosition = this.getOrdinalPosition (this.sideIndex + 1, this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);	
-	this.rot = Math.PI*2/this.gameState.getNumberOfSides()*this.sideIndex + Math.PI/2;
+	this.origin = this.getVertexPosition(this.sideIndex,this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);
+	var nextOrdinalPosition = this.getVertexPosition(this.sideIndex + 1, this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);	
+
+	this.rot = Math.PI*2/this.gameState.getNumberOfSides()*this.sideIndex + Math.PI/2;  // this orientation of the side on the canvas
 	
-	// this represents the players line along which the player can travel in position on the 
-	this.segment = { x:nextOrdinalPosition.x - this.origin.x, 
+	// this represents the player's side along which the player can travel in position on the 
+	this.side = { x:nextOrdinalPosition.x - this.origin.x, 
       				 y:nextOrdinalPosition.y - this.origin.y }; 
 
 };
@@ -53,15 +54,15 @@ hangout.pong.Player.prototype.initDraw = function (imageSrc) {
 hangout.pong.Player.prototype.update = function(dt) {
 	this.playerController.update(dt);
 	
-	// Update the position based on what the controll says.
+	// Update the position based on what the controller says.
 	
 	// set the coordinates on the canvas
-	this.pos.x = this.origin.x + this.segment.x * this.posOnSegment;
-	this.pos.y = this.origin.y + this.segment.y * this.posOnSegment;	
+	this.pos.x = this.origin.x + this.side.x * this.posOnSide;
+	this.pos.y = this.origin.y + this.side.y * this.posOnSide;	
 };
 
 /**
- * After the Update we can draw owrselves on the
+ * After the Update we can draw ourselves on the canvas
  */ 
 hangout.pong.Player.prototype.draw = function(context) {
 	context.save();
@@ -69,24 +70,36 @@ hangout.pong.Player.prototype.draw = function(context) {
 	context.rotate(this.rot);
 	
 	///PLACEHOLDER:  Just write the registered name along the corresponding side
-	var segLength = Math.sqrt(this.segment.x*this.segment.x + this.segment.y*this.segment.y)
+	var segLength = Math.sqrt(this.side.x*this.side.x + this.side.y*this.side.y)
 	context.fillText(this.playerData,-segLength/2,0);
 	//END
 	
 	context.restore();
 };
 
-hangout.pong.Player.prototype.getOrdinalPosition = function(index, numSides, width, height) {
+/**
+*  This function returns the vertex for an n-gon centred in the indicated plane
+* params
+* 	@index - the vertex we need [0..numSides-1]
+*	@numSide - the number of sides in this n-gon
+*	@width - the width of the plane
+*	@height - the height of the plane
+*/
+hangout.pong.Player.prototype.getVertexPosition = function(index, numSides, width, height) {
 	if (index > numSides) {
 		index = 0;
 	} 
 	
 	var radianInterval = (2*Math.PI/numSides)*index;
-	var xMid = width/2;  // TODO: Update with actual dimensions!
+	var xMid = width/2;  //{xMid,yMid} is the center point of the plane
 	var yMid = height/2;
-	var xScale = 0.75;
+	var xScale = 0.75; 
 	var yScale = 0.75;
-	// In each dimension recenter the unit circle at the middle of canvas and scale it u
+	// In each dimension recenter the unit circle at the middle of plane(widthxheight)  and scale it
+	// recall the unit circle 1 = sin(th)^2 + cos(th)^s and each point on the circle is  {cos(th), sin(th)}
+	// details: http://en.wikipedia.org/wiki/Unit_circle (if you like)
+	// We place the circle in the midde of the plane and the scale to fit in the plane itself
+	
 	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * yMid * yScale + yMid }
 	
 };
