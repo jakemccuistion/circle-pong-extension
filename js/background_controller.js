@@ -83,12 +83,20 @@ BackgroundController.prototype.init = function()
  */
 BackgroundController.prototype.onExtensionRequest = function(request, sender, sendResponse) {
   if (request.method == 'ParticipantsReceived') {
-    console.log('Participants recieved', request.data);
+    this.onParticipantsReceived(request.data);
   }
-  else if (request.method == 'ChatRecieved') {
-    console.log('ChatRecieved', request.data);
+  else if (request.method == 'ChatReceived') {
+    this.onChatReceived(request.data);
   }
   sendResponse({}); // snub
+};
+
+BackgroundController.prototype.onChatReceived = function(data) {
+  console.log('ChatReceived', data);
+};
+
+BackgroundController.prototype.onParticipantsReceived = function(data) {
+  console.log('ParticipantsReceived', data);
 };
 
 /**
