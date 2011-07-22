@@ -43,8 +43,8 @@ hangout.pong.Engine.prototype.drawBackground = function() {
 };
 
 hangout.pong.Engine.prototype.addPlayer = function(player) {
-	var controller = new hangout.pong.PlayerUserController(); // Default to user controller.
-	controller.init(this);
+	var controller = new hangout.pong.PlayerControllerRandom(this); // Default to user controller.
+
 	var newPlayer = new hangout.pong.Player(player, this, controller);
 	// 
 	this.players.push(newPlayer);

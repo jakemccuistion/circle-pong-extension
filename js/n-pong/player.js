@@ -8,6 +8,7 @@ hangout.pong.Player = function( playerData,  gameState, playerController ) {
 	this.pos = { x:0, y:0 }; // position on the canvas
 	this.gameState= gameState;
 	this.playerController = playerController; // tells the player if s/he's going left or right on this tick
+	this.playerController.setPlayer(this);
   // These are to increase the speed of drawing
   // Offscreen canvases for caching
   this.picCanvas;
@@ -55,6 +56,19 @@ hangout.pong.Player.prototype.update = function(dt) {
 	this.playerController.update(dt);
 	
 	// Update the position based on what the controller says.
+
+	if ( this.playerController.goLeft ){
+		this.posOnSide += 0.05
+	} else if ( this.playerController.goRight ){
+		this.posOnSide -= 0.05
+	}
+	
+	if (this.posOnSide < 0 ) { 
+		this.posOnSide = 0;
+	} else if ( this.posOnSide > 1){
+		this.posOnSide =1;
+	}
+	
 	
 	// set the coordinates on the canvas
 	this.pos.x = this.origin.x + this.side.x * this.posOnSide;

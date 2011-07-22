@@ -1,37 +1,21 @@
-/**
- *  The Player User Controller
- */
-hangout.pong.PlayerUserController = function() {
-
-};
 
 /**
- *
+ *  The Base clase for controler of a player in the game
  */
-hangout.pong.PlayerUserController.prototype.init = function(gameState) {
+
+hangout.pong.PlayerController = function( gameState ){
 	this.gameState = gameState;
+	this.player = null;
 	this.goLeft = false;
 	this.goRight = false;
+}
 
-};
+hangout.pong.PlayerController.prototype.setPlayer = function( player ){
+	this.player = player;
+}
 
+hangout.pong.PlayerController.prototype.update = function(dt){
 
-/**
- * - 
-*/
-hangout.pong.PlayerUserController.prototype.onMoveEvent = function(dt) {
-	/* buffer move event */
-
-};
-
-
-/**
- * - 
-*/
-hangout.pong.PlayerUserController.prototype.update = function(dt) {
-	/* take the buffered event left right */
-	/* set goLeft or goRight */
-};
-
+}
 
 
