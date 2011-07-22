@@ -7,10 +7,11 @@ hangout.pong.Ball = function(gameState){
 };
 
 hangout.pong.Ball.prototype.init = function() {
-	this.vel = {x:0.01, y:0.01}; ///.. just set it moving in TODO!
+	this.vel = {x:0.05, y:0.05}; ///.. just set it moving in TODO!
 	this.rot = 0; // orientation on the canvas
 	this.pos = {x:this.gameState.canvas.width/2, y:this.gameState.canvas.height/2}; 
     this.radius = 10;
+    this.shape = new hangout.pong.Shape.Circle(this.pos,this.radius); // This is the balls collision shape
 };
 
 /**
@@ -22,10 +23,13 @@ hangout.pong.Ball.prototype.update = function(dt) {
 	// Update the position. 
 	this.pos.x = this.pos.x + (this.vel.x * dt);
 	this.pos.y = this.pos.y+ (this.vel.y * dt);
+	this.vel.x = this.vel.x * 0.999; // Attenuate the ball a little
+	this.vel.y = this.vel.y * 0.999; // 
+	
 };
 
 /**
- * After the Update we can draw owrselves on the 
+ * After the Update we can draw ourselves on the 
  */ 
 hangout.pong.Ball.prototype.draw = function(context) {
 	/* translate the internal state to a position on the canvas and */

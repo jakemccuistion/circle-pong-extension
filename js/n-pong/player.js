@@ -21,11 +21,13 @@ hangout.pong.Player.prototype.init = function(index) {
 	this.origin = this.getVertexPosition(this.sideIndex,this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);
 	var nextOrdinalPosition = this.getVertexPosition(this.sideIndex + 1, this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);	
 
-	this.rot = Math.PI*2/this.gameState.getNumberOfSides()*this.sideIndex + Math.PI/2;  // this orientation of the side on the canvas
-	
 	// this represents the player's side along which the player can travel in position on the 
 	this.side = { x:nextOrdinalPosition.x - this.origin.x, 
       				 y:nextOrdinalPosition.y - this.origin.y }; 
+	this.rot = Math.atan2(this.side.y,this.side.x);
+	
+	this.shape = new hangout.pong.Shape.Line(this.origin,this.side); // This is the player's paddle/collision shape. For now it is the entire line
+
 
 };
 
@@ -85,14 +87,16 @@ hangout.pong.Player.prototype.draw = function(context) {
 	context.lineTo(this.origin.x + this.side.x, this.origin.y + this.side.y);
 	context.stroke();
 	context.closePath();
-	
+	context.fillText(this.sideIndex,this.origin.x,this.origin.y)	
 
 	context.translate(this.pos.x,this.pos.y);
 	context.rotate(this.rot);
 
+
 	context.fillStyle = "green";
   	context.fillRect(-2,-2,4,4);
-	
+  	context.fillText(this.playerData,0,0);
+
 	context.restore();
 };
 

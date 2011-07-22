@@ -33,8 +33,9 @@ hangout.pong.Engine.prototype.init = function() {
   this.addPlayer('james');
   this.addPlayer('mohamed');
   this.addPlayer('kaleb');
-  this.addPlayer('robert');
-  this.addPlayer('krios');
+  this.addPlayer('kris');
+  this.addPlayer('bob');
+  
 
 };
 
@@ -71,8 +72,8 @@ hangout.pong.Engine.prototype.loop = function() {
 	if (this.running) {
 		var now = Date.now();
 		this.deltaTime = now - this.lastUpdateTimestamp;
-		this.checkCollisions(this.deltaTime);
 		this.updateObjects(this.deltaTime);
+		this.checkCollisions(this.deltaTime);
 		this.saveGameState();
 		this.transmitGameState();
 		this.draw();
@@ -89,6 +90,22 @@ hangout.pong.Engine.prototype.updateObjects = function(dt) {
 	this.ball.update(dt);
 	for (var i = 0; i < this.players.length; i++) {
 		this.players[i].update(dt);
+	}
+};
+
+hangout.pong.Engine.prototype.checkCollisions = function(dt) {
+	
+	//TODO: keeping this very simple for this game....
+	for (var i = 0; i < this.players.length; i++) {
+		var colInfo = this.ball.shape.isIntersecting(this.players[i].shape);
+		if (colInfo){
+			// TODO: Finish this, move to an appropriate place
+			var vDotp = this.ball.vel.x * -colInfo.perp.x + this.ball.vel.y * -colInfo.perp.y;
+			var pDotp = colInfo.perp.x * colInfo.perp.x + colInfo.perp.y * colInfo.perp.y;
+			var reflection = { x: 2*vDotp/pDotp*colInfo.perp.x - this.ball.vel.x,
+							   y: 2*vDotp/pDotp*colInfo.perp.y - this.ball.vel.y  };
+			this.ball.vel = reflection;
+		}
 	}
 };
 
