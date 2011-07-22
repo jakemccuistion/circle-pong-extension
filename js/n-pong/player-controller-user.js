@@ -2,12 +2,8 @@
  *  The Player User Controller TODO
  */
 hangout.pong.PlayerControllerUser = function(gameState,player) {
-	
-
-	hangout.pong.PlayerController.superClass_.contructor(gameState,player);
-	
+	hangout.pong.PlayerController.call(gameState,player);
 };
-
 hangout.inherits(hangout.pong.PlayerControllerUser, hangout.pong.PlayerController);
 
 /**
