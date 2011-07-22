@@ -58,14 +58,14 @@ hangout.pong.Player.prototype.update = function(dt) {
 	// Update the position based on what the controller says.
 
 	if ( this.playerController.goLeft ){
-		this.posOnSide += 0.05
+		this.posOnSide += 0.005
 	} else if ( this.playerController.goRight ){
-		this.posOnSide -= 0.05
+		this.posOnSide -= 0.005
 	}
 	
 	if (this.posOnSide < 0 ) { 
 		this.posOnSide = 0;
-	} else if ( this.posOnSide > 1){
+	} else if (this.posOnSide > 1){
 		this.posOnSide =1;
 	}
 	
@@ -79,14 +79,19 @@ hangout.pong.Player.prototype.update = function(dt) {
  * After the Update we can draw ourselves on the canvas
  */ 
 hangout.pong.Player.prototype.draw = function(context) {
-	context.save();
-	context.translate(this.pos.x,this.pos.y)
-	context.rotate(this.rot);
+	context.save();	
+	context.beginPath();
+	context.moveTo(this.origin.x,this.origin.y);
+	context.lineTo(this.origin.x + this.side.x, this.origin.y + this.side.y);
+	context.stroke();
+	context.closePath();
 	
-	///PLACEHOLDER:  Just write the registered name along the corresponding side
-	var segLength = Math.sqrt(this.side.x*this.side.x + this.side.y*this.side.y)
-	context.fillText(this.playerData,-segLength/2,0);
-	//END
+
+	context.translate(this.pos.x,this.pos.y);
+	context.rotate(this.rot);
+
+	context.fillStyle = "green";
+  	context.fillRect(-2,-2,4,4);
 	
 	context.restore();
 };
@@ -102,7 +107,9 @@ hangout.pong.Player.prototype.draw = function(context) {
 hangout.pong.Player.prototype.getVertexPosition = function(index, numSides, width, height) {
 	if (index > numSides) {
 		index = 0;
-	} 
+	} else if ( index < 0 ){
+		index = numSides;
+	}
 	
 	var radianInterval = (2*Math.PI/numSides)*index;
 	var xMid = width/2;  //{xMid,yMid} is the center point of the plane
