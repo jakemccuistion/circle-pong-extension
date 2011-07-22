@@ -1,5 +1,5 @@
 /**
- *
+ * Google Talk injection
  */
 hangout.injection.TalkInjection = function() {
   this.chatPattern = /<b>(.*)<\/b>(.*)/i;
@@ -56,6 +56,7 @@ hangout.injection.TalkInjection.prototype.onHistoryReceieved = function(e) {
  * @param {string} from The recipient. It could be 'g' for Google or numbers for
  *                      everything else.
  * @param {string} message The message coming from Hangout chat.
+ * @return {Object} the response object that contains from, author, and line.
  */
 hangout.injection.TalkInjection.prototype.parseChatMessage = function(isNewSender, from, message) {
   var matches = message.match(this.chatPattern);

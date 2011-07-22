@@ -91,10 +91,20 @@ BackgroundController.prototype.onExtensionRequest = function(request, sender, se
   sendResponse({}); // snub
 };
 
+/**
+ * Event when a chat message has been received.
+ *
+ * @param {Object} data The chat response object.
+ */
 BackgroundController.prototype.onChatReceived = function(data) {
   console.log('ChatReceived', data);
 };
 
+/**
+ * Event when a participant been received.
+ *
+ * @param {Object} data The chat response object.
+ */
 BackgroundController.prototype.onParticipantsReceived = function(data) {
   console.log('ParticipantsReceived', data);
 };
