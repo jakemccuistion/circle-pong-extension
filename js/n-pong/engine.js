@@ -104,7 +104,9 @@ hangout.pong.Engine.prototype.checkCollisions = function(dt) {
 			var pDotp = colInfo.perp.x * colInfo.perp.x + colInfo.perp.y * colInfo.perp.y;
 			var reflection = { x: 2*vDotp/pDotp*colInfo.perp.x - this.ball.vel.x,
 							   y: 2*vDotp/pDotp*colInfo.perp.y - this.ball.vel.y  };
-			this.ball.vel = reflection;
+							   
+						
+			this.ball.vel.reflection(colInfo.perp.scale(-1));
 		}
 	}
 };

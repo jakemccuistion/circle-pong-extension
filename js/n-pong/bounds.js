@@ -36,7 +36,7 @@ hangout.pong.Shape.prototype.isIntersectingCircleLine = function(c, l){
 	
 	if (result){
 	    console.log('bounce');
-		result = { perp: { x:l.vec.y, y:-l.vec.x }}
+		result = { perp: new hangout.pong.math2d.COORD2(l.vec.y, -l.vec.x)};
 	}
 	
 	return result; //we are good.

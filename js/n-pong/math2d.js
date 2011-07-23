@@ -9,6 +9,11 @@ hangout.pong.math2d.COORD2 = function(x,y){
 	this.x=x;
 	this.y=y;
 }
+hangout.pong.math2d.COORD2.prototype.copy = function(p){
+	this.x = p.x;
+	this.y = p.y;
+	return this;
+}
 
 hangout.pong.math2d.COORD2.prototype.len = function(){
 	return Math.sqrt(this.x*this.x + this.y*this.y);
@@ -41,6 +46,10 @@ hangout.pong.math2d.COORD2.prototype.perp = function(){
 hangout.pong.math2d.COORD2.prototype.reflection = function(l){
 	this.add( l.scale( -2*this.dot(l)/l.dot(l) ) );
 	return this;
+}
+
+hangout.pong.math2d.COORD2.prototype.rotation = function(){
+	return Math.atan2(this.y,this.x);
 }
 
 

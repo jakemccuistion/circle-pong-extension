@@ -5,7 +5,8 @@ hangout.pong.Player = function( playerData,  gameState, playerController ) {
 	this.playerData = playerData; // don't know what this looks like right now.. some data about who this is...
 	this.posOnSide = 0.5;    // [0..1] 0 = on the origin,  1 =  origin + side
 	this.rot = 0; // orientation on the canvas
-	this.pos = { x:0, y:0 }; // position on the canvas
+	this.pos = new hangout.pong.math2d.COORD2(0,0);
+	
 	this.gameState= gameState;
 	this.playerController = playerController; // tells the player if s/he's going left or right on this tick
 	this.playerController.setPlayer(this);
@@ -18,13 +19,15 @@ hangout.pong.Player = function( playerData,  gameState, playerController ) {
 
 hangout.pong.Player.prototype.init = function(index) {
 	this.sideIndex = index;
-	this.origin = this.getVertexPosition(this.sideIndex,this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);
+	var org = this.getVertexPosition(this.sideIndex,this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);
 	var nextOrdinalPosition = this.getVertexPosition(this.sideIndex + 1, this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);	
 
+	this.origin = new hangout.pong.math2d.COORD2(org.x,org.y);
+
 	// this represents the player's side along which the player can travel in position on the 
-	this.side = { x:nextOrdinalPosition.x - this.origin.x, 
-      				 y:nextOrdinalPosition.y - this.origin.y }; 
-	this.rot = Math.atan2(this.side.y,this.side.x);
+	this.side = new hangout.pong.math2d.COORD2( nextOrdinalPosition.x - this.origin.x, 
+      				 							 nextOrdinalPosition.y - this.origin.y ); 
+	this.rot = this.side.rotation();
 	
 	this.shape = new hangout.pong.Shape.Line(this.origin,this.side); // This is the player's paddle/collision shape. For now it is the entire line
 
@@ -73,8 +76,7 @@ hangout.pong.Player.prototype.update = function(dt) {
 	
 	
 	// set the coordinates on the canvas
-	this.pos.x = this.origin.x + this.side.x * this.posOnSide;
-	this.pos.y = this.origin.y + this.side.y * this.posOnSide;	
+	this.pos.copy(this.side).scale(this.posOnSide).add(this.origin);
 };
 
 /**
