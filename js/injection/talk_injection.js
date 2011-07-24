@@ -41,7 +41,7 @@ hangout.injection.TalkInjection.prototype.onHistoryReceieved = function(e) {
         parent = parent.parentNode;
       }
       var fromMessage = parent.getAttribute('from');
-      if (parent != 'sa') { // Filter out Sent at messages.
+      if (fromMessage != 'sa') { // Filter out Sent at messages.
         var chatMessage = this.parseChatMessage(isNewSender, fromMessage, message.innerHTML);
         chrome.extension.sendRequest({method: 'ChatReceived', data: chatMessage});
       }
