@@ -3,7 +3,7 @@
  * @constructor
  */
 BackgroundController = function() {
-  this.participants = {};
+  this.participants = null;
   this.hangout_part_join_pattern = /^(.*) (joined|left) group chat\.$/;
   this.onExtensionLoaded();
 };
@@ -144,4 +144,42 @@ BackgroundController.prototype.onParticipantsReceived = function(data) {
  */
 BackgroundController.prototype.onBrowserActionClicked = function(tab) {
   chrome.windows.create({url: chrome.extension.getURL('game.html'), width: 500, height: 500, type: 'popup' });
+};
+
+/**
+ * Find the participant object by name so we get more information.
+ *
+ * @param {string} name The name to find.
+ * @return {object} The user object that has {displayName, id, presence, thumbnameUrl}
+ */
+BackgroundController.prototype.findParticipantByName = function(name) {
+  var users = this.participants.participants;
+  for (var key in users) {
+    if (!users.hasOwnProperty(key)) {
+      continue;
+    }
+    var item = users[key];
+    if (item.displayName == name) {
+      return item;
+    }
+  }
+  return null;
+};
+
+/**
+ * The Google+ ID for this hangout for the current user..
+ *
+ * @return {long} The hangout Google Plus ID.
+ */
+BackgroundController.prototype.getMyID = function() {
+  return this.participants ? this.participants.myId : -1; 
+};
+
+/**
+ * The Google Plus Hangout authors ID who started the hangout.
+ *
+ * @return {long} The hangout Google Plus ID.
+ */
+BackgroundController.prototype.getAuthorID = function() {
+  return this.participants ? this.participants.authorId : -1; 
 };
