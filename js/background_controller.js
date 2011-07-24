@@ -96,7 +96,7 @@ BackgroundController.prototype.onExtensionRequest = function(request, sender, se
 BackgroundController.prototype.onChatReceived = function(data) {
   console.log('ChatReceived', data);
   if (data.from == 'g') { // Google Event
-    var matchJoinPart = data.line.matches(this.hangout_part_join_pattern);
+    var matchJoinPart = data.line.match(this.hangout_part_join_pattern);
     if (matchJoinPart) {
       var name = matchJoinPart[1];
       var state = matchJoinPart[2];
