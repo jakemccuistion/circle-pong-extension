@@ -3,6 +3,7 @@
  * @constructor
  */
 BackgroundController = function() {
+  this.participants = {};
   this.hangout_part_join_pattern = /^(.*) (joined|left) group chat\.$/;
   this.onExtensionLoaded();
 };
@@ -115,7 +116,7 @@ BackgroundController.prototype.onChatReceived = function(data) {
  * @param {string} name the player name.
  */
 BackgroundController.prototype.onJoin = function(name) {
-  // Send to Game Context.
+  console.log('ParticipantsJoined', name);
 };
 
 /**
@@ -124,7 +125,7 @@ BackgroundController.prototype.onJoin = function(name) {
  * @param {string} name the player name.
  */
 BackgroundController.prototype.onPart = function(name) {
-  // Send to Game Context.
+  console.log('ParticipantsParted', name);
 };
 
 /**
@@ -133,7 +134,7 @@ BackgroundController.prototype.onPart = function(name) {
  * @param {Object} data The chat response object.
  */
 BackgroundController.prototype.onParticipantsReceived = function(data) {
-  console.log('ParticipantsReceived', data);
+  this.participants = data;
 };
 
 /**
