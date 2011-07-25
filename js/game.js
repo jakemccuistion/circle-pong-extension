@@ -29,6 +29,12 @@ GameController.prototype.onWindowLoad = function() {
  */
 GameController.prototype.onGameStart = function() {
   this.engine.start();
+  // Test data every time.
+  if ($('chkTestData').checked) {
+    this.engine.addPlayer('mohamed'); 
+    this.engine.addPlayer('john');
+    this.engine.addPlayer('bob');
+  }
 };
 
 /**
