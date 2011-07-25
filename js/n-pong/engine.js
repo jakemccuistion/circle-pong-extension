@@ -22,8 +22,8 @@ hangout.pong.Engine.prototype.init = function() {
   this.deltaTime = null;
   this.animationHandle = null;
   this.running = null;
-  this.status = document.getElementById('status');
-  this.canvas = document.getElementById('gameboard');
+  this.status = $('status');
+  this.canvas = $('gameboard');
   this.context = this.canvas.getContext("2d");
 
   this.ball = new hangout.pong.Ball(this);
