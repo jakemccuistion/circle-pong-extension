@@ -27,13 +27,6 @@ hangout.pong.Engine.prototype.init = function() {
   this.context = this.canvas.getContext("2d");
 
   this.ball = new hangout.pong.Ball(this);
-
-  this.addPlayer('john');
-  this.addPlayer('james');
-  this.addPlayer('mohamed');
-  this.addPlayer('kaleb');
-  this.addPlayer('kris');
-  this.addPlayer('bob');
 };
 
 hangout.pong.Engine.prototype.drawBackground = function() {

@@ -20,14 +20,27 @@ GameController.prototype.init = function() {
 GameController.prototype.onWindowLoad = function() {
   chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
   $('btnStart').addEventListener('click', this.onGameStart.bind(this), false);
+  // For now, it is just the pong game.
+  this.engine = new hangout.pong.Engine();
 };
 
 /**
- * Starts the game selected. For now, it is just the pong game.
+ * Starts the game selected.
  */
 GameController.prototype.onGameStart = function() {
-  this.engine = new hangout.pong.Engine();
   this.engine.start();
+};
+
+/**
+ * Fetches Information regarding the current game. Such as the game state
+ * when it started, players, etc.
+ *
+ * @return {object} the game status object.
+ */
+GameController.prototype.getGameStatus = function() {
+  return {
+    running: this.engine ? true : false
+  };
 };
 
 /**
@@ -42,8 +55,12 @@ GameController.prototype.onGameStart = function() {
                               undefined if there is no response.
  */
 GameController.prototype.onExtensionRequest = function(request, sender, sendResponse) {
-  if (request.method == 'somecommand') {
-       // Handle game moves here
+  var gameStatus = this.getGameStatus();
+  if (request.method == 'ParticipantJoined') {
+    this.engine.addPlayer(request.data);
+  }
+  else if (request.method == 'ParticipantParted') {
+    this.engine.removePlayer(request.data);
   }
   sendResponse({});
 };

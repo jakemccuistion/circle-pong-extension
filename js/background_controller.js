@@ -4,6 +4,7 @@
  */
 BackgroundController = function() {
   this.participants = null;
+  this.session_participants = null;
   this.hangout_part_join_pattern = /^(.*) (joined|left) group chat\.$/;
   this.onExtensionLoaded();
 };
@@ -116,7 +117,12 @@ BackgroundController.prototype.onChatReceived = function(data) {
  * @param {string} name the player name.
  */
 BackgroundController.prototype.onJoin = function(name) {
-  console.log('ParticipantsJoined', name);
+  console.log('ParticipantJoined', name);
+  var userIndex = this.participants.indexOf(name);
+  if (userIndex == -1) {
+    this.participants.push(name);
+    chrome.extension.sendRequest({method: 'ParticipantJoined', data: name});
+  }
 };
 
 /**
@@ -125,7 +131,12 @@ BackgroundController.prototype.onJoin = function(name) {
  * @param {string} name the player name.
  */
 BackgroundController.prototype.onPart = function(name) {
-  console.log('ParticipantsParted', name);
+  console.log('ParticipantParted', name);
+  var userIndex = this.participants.indexOf(name);
+  if (userIndex != -1) {
+    this.participants.splice(userIndex, 1);
+    chrome.extension.sendRequest({method: 'ParticipantParted', data: name});
+  }
 };
 
 /**
@@ -134,7 +145,7 @@ BackgroundController.prototype.onPart = function(name) {
  * @param {Object} data The chat response object.
  */
 BackgroundController.prototype.onParticipantsReceived = function(data) {
-  this.participants = data;
+  this.session_participants = data;
 };
 
 /**
@@ -153,7 +164,7 @@ BackgroundController.prototype.onBrowserActionClicked = function(tab) {
  * @return {object} The user object that has {displayName, id, presence, thumbnameUrl}
  */
 BackgroundController.prototype.findParticipantByName = function(name) {
-  var users = this.participants.participants;
+  var users = this.session_participants.participants;
   for (var key in users) {
     if (!users.hasOwnProperty(key)) {
       continue;
@@ -172,7 +183,7 @@ BackgroundController.prototype.findParticipantByName = function(name) {
  * @return {long} The hangout Google Plus ID.
  */
 BackgroundController.prototype.getMyID = function() {
-  return this.participants ? this.participants.myId : -1; 
+  return this.session_participants ? this.session_participants.myId : -1; 
 };
 
 /**
@@ -181,5 +192,5 @@ BackgroundController.prototype.getMyID = function() {
  * @return {long} The hangout Google Plus ID.
  */
 BackgroundController.prototype.getAuthorID = function() {
-  return this.participants ? this.participants.authorId : -1; 
+  return this.session_participants ? this.session_participants.authorId : -1; 
 };
