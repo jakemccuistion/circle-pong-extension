@@ -3,7 +3,7 @@
  * @constructor
  */
 BackgroundController = function() {
-  this.participants = null;
+  this.participants = [];
   this.session_participants = null;
   this.hangout_part_join_pattern = /^(.*) (joined|left) group chat\.$/;
   this.onExtensionLoaded();
@@ -82,11 +82,43 @@ BackgroundController.prototype.init = function() {
 BackgroundController.prototype.onExtensionRequest = function(request, sender, sendResponse) {
   if (request.method == 'ParticipantsReceived') {
     this.onParticipantsReceived(request.data);
+    if (request.first) {
+      this.onHangoutStarted();
+    }
   }
   else if (request.method == 'ChatReceived') {
     this.onChatReceived(request.data);
   }
+  else if (request.method == 'GameStarted') {
+    this.onGameStarted();
+  }
   sendResponse({}); // snub
+};
+
+/**
+ * Event when game has started. Send the list.
+ */
+BackgroundController.prototype.onGameStarted = function() {
+  this.sendToHangoutTab({ method: 'ParticipantList', data: this.participants });
+};
+
+/**
+ * Event when Hangout has started.
+ */
+BackgroundController.prototype.onHangoutStarted = function() {
+  // Sessions should have been instantiated.
+  if (!this.session_participants) {
+    return;
+  }
+
+  this.participants = [];
+  var users = this.session_participants.participants;
+  for (var key in users) {
+    if (users.hasOwnProperty(key)) {
+      // This is incorrect, old participants will be persisted, must figure out a way :(
+      this.participants.push(users[key].displayName);
+    }
+  }
 };
 
 /**
@@ -121,7 +153,7 @@ BackgroundController.prototype.onJoin = function(name) {
   var userIndex = this.participants.indexOf(name);
   if (userIndex == -1) {
     this.participants.push(name);
-    chrome.extension.sendRequest({method: 'ParticipantJoined', data: name});
+    this.sendToHangoutTab({method: 'ParticipantJoined', data: name});
   }
 };
 
@@ -135,7 +167,7 @@ BackgroundController.prototype.onPart = function(name) {
   var userIndex = this.participants.indexOf(name);
   if (userIndex != -1) {
     this.participants.splice(userIndex, 1);
-    chrome.extension.sendRequest({method: 'ParticipantParted', data: name});
+    this.sendToHangoutTab({method: 'ParticipantParted', data: name});
   }
 };
 
@@ -166,12 +198,11 @@ BackgroundController.prototype.onBrowserActionClicked = function(tab) {
 BackgroundController.prototype.findParticipantByName = function(name) {
   var users = this.session_participants.participants;
   for (var key in users) {
-    if (!users.hasOwnProperty(key)) {
-      continue;
-    }
-    var item = users[key];
-    if (item.displayName == name) {
-      return item;
+    if (users.hasOwnProperty(key)) {
+      var item = users[key];
+      if (item.displayName == name) {
+        return item;
+      }
     }
   }
   return null;
@@ -193,4 +224,13 @@ BackgroundController.prototype.getMyID = function() {
  */
 BackgroundController.prototype.getAuthorID = function() {
   return this.session_participants ? this.session_participants.authorId : -1; 
+};
+
+/**
+ * Send the data to the hangout window.
+ *
+ * @param {object} data The data payload as a JSON object.
+ */
+BackgroundController.prototype.sendToHangoutTab = function(data) {
+  chrome.extension.sendRequest(data);
 };

@@ -2,6 +2,7 @@
  * User Injection to figure out how many users exist here,
  */
 hangout.injection.UserInjection = function() {
+  this.firstExport = true;
   this.exportEvent = document.createEvent('Event');
   this.exportEvent.initEvent('particpantExported', true, true);
   this.transferDOM = this.createTransferDOM();
@@ -35,7 +36,12 @@ hangout.injection.UserInjection.prototype.init = function() {
 hangout.injection.UserInjection.prototype.particpantExported = function() {
   var transferDOM = $('transfer-dom-area');
   var participantsMap = JSON.parse(transferDOM.innerText);
-  chrome.extension.sendRequest({method: 'ParticipantsReceived', data: participantsMap});
+  chrome.extension.sendRequest({method: 'ParticipantsReceived', data: participantsMap, first: this.firstExport});
+  // On the very first export, save it to the participants list. This is done here because we want
+  // to reset the participants on every new hangout.
+  if (this.firstExport) {
+    this.firstExport = false;
+  }
 };
 
 

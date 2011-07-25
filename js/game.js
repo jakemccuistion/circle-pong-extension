@@ -35,6 +35,8 @@ GameController.prototype.onGameStart = function() {
     this.engine.addPlayer('john');
     this.engine.addPlayer('bob');
   }
+  // Tell the background the game has started.
+  chrome.extension.sendRequest({method: 'GameStarted'});
 };
 
 /**
@@ -67,6 +69,11 @@ GameController.prototype.onExtensionRequest = function(request, sender, sendResp
   }
   else if (request.method == 'ParticipantParted') {
     this.engine.removePlayer(request.data);
+  }
+  else if (request.method == 'ParticipantList') {
+    for (var i in request.data) {
+      this.engine.addPlayer(request.data[i]);
+    }
   }
   sendResponse({});
 };
