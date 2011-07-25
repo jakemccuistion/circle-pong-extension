@@ -3,53 +3,53 @@
 * These operate on 'this' The do not return  new instance.
 */
 hangout.pong.math2d = hangout.pong.math2d || {};
+
 // oh dear the namespaces need some work!
 
-hangout.pong.math2d.COORD2 = function(x,y){
-	this.x=x;
-	this.y=y;
-}
-hangout.pong.math2d.COORD2.prototype.copy = function(p){
+hangout.pong.math2d.COORD2 = function(x,y) {
+	this.x = x;
+	this.y = y;
+};
+
+hangout.pong.math2d.COORD2.prototype.copy = function(p) {
 	this.x = p.x;
 	this.y = p.y;
 	return this;
-}
+};
 
-hangout.pong.math2d.COORD2.prototype.len = function(){
-	return Math.sqrt(this.x*this.x + this.y*this.y);
-}
+hangout.pong.math2d.COORD2.prototype.len = function() {
+	return Math.sqrt(this.x * this.x + this.y * this.y);
+};
 
-hangout.pong.math2d.COORD2.prototype.lenSq = function(){
-	return this.x*this.x + this.y*this.y;
-}
+hangout.pong.math2d.COORD2.prototype.lenSq = function() {
+	return this.x * this.x + this.y * this.y;
+};
 
-hangout.pong.math2d.COORD2.prototype.add = function (v){
+hangout.pong.math2d.COORD2.prototype.add = function(v) {
 	this.x += v.x;
 	this.y += v.y;
 	return this;
-}
+};
 
-hangout.pong.math2d.COORD2.prototype.scale = function(s){
+hangout.pong.math2d.COORD2.prototype.scale = function(s) {
 	this.x *= s;
 	this.y *= s;
 	return this;
-}
+};
 
-hangout.pong.math2d.COORD2.prototype.dot = function(v){
+hangout.pong.math2d.COORD2.prototype.dot = function(v) {
 	return this.x * v.x + this.y * v.y;
-}
+};
 
-hangout.pong.math2d.COORD2.prototype.perp = function(){
-	return new pong.math2d.COORD2(this.x,this.y)
-}
+hangout.pong.math2d.COORD2.prototype.perp = function() {
+	return new pong.math2d.COORD2(this.x, this.y);
+};
 
-hangout.pong.math2d.COORD2.prototype.reflection = function(l){
-	this.add( l.scale( -2*this.dot(l)/l.dot(l) ) );
+hangout.pong.math2d.COORD2.prototype.reflection = function(l) {
+	this.add(l.scale(-2 * this.dot(l) / l.dot(l)));
 	return this;
-}
+};
 
-hangout.pong.math2d.COORD2.prototype.rotation = function(){
-	return Math.atan2(this.y,this.x);
-}
-
-
+hangout.pong.math2d.COORD2.prototype.rotation = function() {
+	return Math.atan2(this.y, this.x);
+};

@@ -11,10 +11,9 @@ window.requestAnimFrame = (function() {
 					};
 })();
 
-hangout.pong.Engine = function () {
+hangout.pong.Engine = function() {
 	this.init();
 };
-
 
 hangout.pong.Engine.prototype.init = function() {
   this.players = [];
@@ -25,7 +24,7 @@ hangout.pong.Engine.prototype.init = function() {
   this.running = null;
   this.status = document.getElementById('status');
   this.canvas = document.getElementById('gameboard');
-  this.context = this.canvas.getContext("2d")
+  this.context = this.canvas.getContext("2d");
 
   this.ball = new hangout.pong.Ball(this);
 
@@ -35,8 +34,6 @@ hangout.pong.Engine.prototype.init = function() {
   this.addPlayer('kaleb');
   this.addPlayer('kris');
   this.addPlayer('bob');
-  
-
 };
 
 hangout.pong.Engine.prototype.drawBackground = function() {
@@ -94,7 +91,6 @@ hangout.pong.Engine.prototype.updateObjects = function(dt) {
 };
 
 hangout.pong.Engine.prototype.checkCollisions = function(dt) {
-	
 	//TODO: keeping this very simple for this game....
 	for (var i = 0; i < this.players.length; i++) {
 		var colInfo = this.ball.shape.isIntersecting(this.players[i].shape);
@@ -102,34 +98,31 @@ hangout.pong.Engine.prototype.checkCollisions = function(dt) {
 			// TODO: Finish this, move to an appropriate place
 			var vDotp = this.ball.vel.x * -colInfo.perp.x + this.ball.vel.y * -colInfo.perp.y;
 			var pDotp = colInfo.perp.x * colInfo.perp.x + colInfo.perp.y * colInfo.perp.y;
-			var reflection = { x: 2*vDotp/pDotp*colInfo.perp.x - this.ball.vel.x,
-							   y: 2*vDotp/pDotp*colInfo.perp.y - this.ball.vel.y  };
-							   
-						
+			var reflection = { 
+        x: 2 * vDotp / pDotp * colInfo.perp.x - this.ball.vel.x,
+        y: 2 * vDotp / pDotp * colInfo.perp.y - this.ball.vel.y
+      };
 			this.ball.vel.reflection(colInfo.perp.scale(-1));
 		}
 	}
 };
 
-hangout.pong.Engine.prototype.draw = function () {
+hangout.pong.Engine.prototype.draw = function() {
 	// Local function that draws on the client
 	var ctx = this.context;
 	this.canvas.width = this.canvas.width;
-  	ctx.fillStyle = 'black';
-  	this.drawBackground();
-  	this.ball.draw(ctx);
-  	for (var i = 0; i < this.players.length; i++) {
+  ctx.fillStyle = 'black';
+  this.drawBackground();
+  this.ball.draw(ctx);
+  for (var i = 0; i < this.players.length; i++) {
 		this.players[i].draw(ctx);
-  	}
+  }
 };
-
-
-
 
 /*
  - Starts the game loop from running 
 */
-hangout.pong.Engine.prototype.start = function () {
+hangout.pong.Engine.prototype.start = function() {
 	console.log("starting game with ____ as host");
 	this.running = true;
 	this.lastUpdateTimestamp = Date.now()
@@ -143,7 +136,7 @@ hangout.pong.Engine.prototype.start = function () {
 /*
  - Stops the game loop from running 
 */
-hangout.pong.Engine.prototype.pause = function () {
+hangout.pong.Engine.prototype.pause = function() {
 	this.running = false;
 };
 

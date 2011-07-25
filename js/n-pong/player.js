@@ -1,7 +1,7 @@
 /**
  *  The Player, well the paddle :) TOOO: Implement extends from gameObject
  */
-hangout.pong.Player = function( playerData,  gameState, playerController ) {
+hangout.pong.Player = function(playerData, gameState, playerController) {
 	this.playerData = playerData; // don't know what this looks like right now.. some data about who this is...
 	this.posOnSide = 0.5;    // [0..1] 0 = on the origin,  1 =  origin + side
 	this.rot = 0; // orientation on the canvas
@@ -14,28 +14,32 @@ hangout.pong.Player = function( playerData,  gameState, playerController ) {
   // Offscreen canvases for caching
   this.picCanvas;
   this.paddleCanvas;
-
 };
 
 hangout.pong.Player.prototype.init = function(index) {
 	this.sideIndex = index;
-	var org = this.getVertexPosition(this.sideIndex,this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);
-	var nextOrdinalPosition = this.getVertexPosition(this.sideIndex + 1, this.gameState.getNumberOfSides(),this.gameState.canvas.width,this.gameState.canvas.height);	
+	var org = this.getVertexPosition(this.sideIndex,
+                                   this.gameState.getNumberOfSides(),
+                                   this.gameState.canvas.width,
+                                   this.gameState.canvas.height);
+	var nextOrdinalPosition = this.getVertexPosition(this.sideIndex + 1,
+                                                   this.gameState.getNumberOfSides(),
+                                                   this.gameState.canvas.width,
+                                                   this.gameState.canvas.height);	
 
-	this.origin = new hangout.pong.math2d.COORD2(org.x,org.y);
+	this.origin = new hangout.pong.math2d.COORD2(org.x, org.y);
 
 	// this represents the player's side along which the player can travel in position on the 
-	this.side = new hangout.pong.math2d.COORD2( nextOrdinalPosition.x - this.origin.x, 
-      				 							 nextOrdinalPosition.y - this.origin.y ); 
+	this.side = new hangout.pong.math2d.COORD2(nextOrdinalPosition.x - this.origin.x, 
+                                             nextOrdinalPosition.y - this.origin.y); 
 	this.rot = this.side.rotation();
-	
-	this.shape = new hangout.pong.Shape.Line(this.origin,this.side); // This is the player's paddle/collision shape. For now it is the entire line
 
-
+  // This is the player's paddle/collision shape. For now it is the entire line
+	this.shape = new hangout.pong.Shape.Line(this.origin, this.side); 
 };
 
 
-hangout.pong.Player.prototype.initDraw = function (imageSrc) {
+hangout.pong.Player.prototype.initDraw = function(imageSrc) {
   this.picCanvas = document.createElement("canvas");
   var ctx = this.picCanvas.getContext("2d");
   var pic = new Image();
@@ -62,18 +66,19 @@ hangout.pong.Player.prototype.update = function(dt) {
 	
 	// Update the position based on what the controller says.
 
-	if ( this.playerController.goLeft ){
+	if (this.playerController.goLeft){
 		this.posOnSide += 0.005
-	} else if ( this.playerController.goRight ){
+	}
+  else if (this.playerController.goRight) {
 		this.posOnSide -= 0.005
 	}
 	
-	if (this.posOnSide < 0 ) { 
+	if (this.posOnSide < 0) { 
 		this.posOnSide = 0;
-	} else if (this.posOnSide > 1){
+	}
+  else if (this.posOnSide > 1) {
 		this.posOnSide =1;
 	}
-	
 	
 	// set the coordinates on the canvas
 	this.pos.copy(this.side).scale(this.posOnSide).add(this.origin);
@@ -89,37 +94,38 @@ hangout.pong.Player.prototype.draw = function(context) {
 	context.lineTo(this.origin.x + this.side.x, this.origin.y + this.side.y);
 	context.stroke();
 	context.closePath();
-	context.fillText(this.sideIndex,this.origin.x,this.origin.y)	
+	context.fillText(this.sideIndex, this.origin.x, this.origin.y)	
 
-	context.translate(this.pos.x,this.pos.y);
+	context.translate(this.pos.x, this.pos.y);
 	context.rotate(this.rot);
 
 
 	context.fillStyle = "green";
-  	context.fillRect(-2,-2,4,4);
-  	context.fillText(this.playerData,0,0);
+  context.fillRect(-2, -2, 4, 4);
+  context.fillText(this.playerData, 0, 0);
 
 	context.restore();
 };
 
 /**
-*  This function returns the vertex for an n-gon centred in the indicated plane
-* params
-* 	@index - the vertex we need [0..numSides-1]
-*	@numSide - the number of sides in this n-gon
-*	@width - the width of the plane
-*	@height - the height of the plane
-*/
+  *  This function returns the vertex for an n-gon centred in the indicated plane
+  * params
+  * 	@index - the vertex we need [0..numSides-1]
+  *	@numSide - the number of sides in this n-gon
+  *	@width - the width of the plane
+  *	@height - the height of the plane
+  */
 hangout.pong.Player.prototype.getVertexPosition = function(index, numSides, width, height) {
 	if (index > numSides) {
 		index = 0;
-	} else if ( index < 0 ){
+	}
+  else if (index < 0){
 		index = numSides;
 	}
 	
-	var radianInterval = (2*Math.PI/numSides)*index;
-	var xMid = width/2;  //{xMid,yMid} is the center point of the plane
-	var yMid = height/2;
+	var radianInterval = (2 * Math.PI / numSides) * index;
+	var xMid = width / 2;  //{xMid,yMid} is the center point of the plane
+	var yMid = height / 2;
 	var xScale = 0.75; 
 	var yScale = 0.75;
 	// In each dimension recenter the unit circle at the middle of plane(widthxheight)  and scale it
@@ -127,7 +133,6 @@ hangout.pong.Player.prototype.getVertexPosition = function(index, numSides, widt
 	// details: http://en.wikipedia.org/wiki/Unit_circle (if you like)
 	// We place the circle in the midde of the plane and the scale to fit in the plane itself
 	
-	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * yMid * yScale + yMid }
-	
+	return {x:Math.cos(radianInterval) * xMid * xScale + xMid , y:Math.sin(radianInterval) * yMid * yScale + yMid };
 };
 

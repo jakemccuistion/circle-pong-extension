@@ -1,12 +1,10 @@
-GameController = function()
-{
+GameController = function() {
 };
 
 /**
  * Initilaization routine for first load.
  */
-GameController.prototype.init = function()
-{
+GameController.prototype.init = function() {
   chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
 };
 
