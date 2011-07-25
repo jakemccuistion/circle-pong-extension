@@ -15,15 +15,11 @@
   <script type="text/javascript" src="/js/n-pong/player_controller.js"></script>
   <script type="text/javascript" src="/js/n-pong/player_controller_user.js"></script>
   <script type="text/javascript" src="/js/n-pong/player_controller_random.js"></script>
-  
 </head>
 <body>
-	<script> 
-		var e;
-	</script>
   <h1>Game board</h1>
-  <button onclick="e = new hangout.pong.Engine();e.start()">Start</button>
-  <canvas id="gameboard" width="380px" height="380px" style="border:1px dotted;"></canvas>
+  <button id="btnStart">Start</button>
+  <canvas id="gameboard" width="380px" height="380px"></canvas>
   <div id="status"></div>
 </body>
 </html>

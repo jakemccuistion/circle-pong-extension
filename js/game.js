@@ -1,11 +1,33 @@
+/**
+ * Main Game controller that controlls a single game instance.
+ *
+ * @constructor
+ */
 GameController = function() {
+  this.engine = null;
 };
 
 /**
  * Initilaization routine for first load.
  */
 GameController.prototype.init = function() {
+  window.addEventListener('load', this.onWindowLoad.bind(this), false);
+};
+
+/**
+ * Event when windows has completely loaded.
+ */
+GameController.prototype.onWindowLoad = function() {
   chrome.extension.onRequest.addListener(this.onExtensionRequest.bind(this));
+  $('btnStart').addEventListener('click', this.onGameStart.bind(this), false);
+};
+
+/**
+ * Starts the game selected. For now, it is just the pong game.
+ */
+GameController.prototype.onGameStart = function() {
+  this.engine = new hangout.pong.Engine();
+  this.engine.start();
 };
 
 /**
@@ -21,7 +43,7 @@ GameController.prototype.init = function() {
  */
 GameController.prototype.onExtensionRequest = function(request, sender, sendResponse) {
   if (request.method == 'somecommand') {
-	//Handle game moves here
+       // Handle game moves here
   }
   sendResponse({});
 };
